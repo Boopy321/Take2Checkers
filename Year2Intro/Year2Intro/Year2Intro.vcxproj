@@ -1,0 +1,148 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{A27FF33F-50EF-428E-9AA4-A004B14F1372}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>Year2Intro</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>GLM_SWIZZLE;GLM_FORCE_PURE;WIN32;_DEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(ProjectDir)dep\aieutilities;$(ProjectDir)dep\glm;$(ProjectDir)dep\glfw-3.1.bin.WIN32\include;$(ProjectDir)src;$(ProjectDir)dep/stb-master;$(ProjectDir)dep\AntTweakBar\include;$(ProjectDir)dep\FBXLoader;$(ProjectDir)dep\Raknet;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(ProjectDir)dep\glfw-3.1.bin.WIN32\lib-vc2013;$(ProjectDir)\dep\AntTweakBar\lib;$(ProjectDir)\dep\FBXLoader;$(ProjectDir)\dep\Raknet;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glfw3.lib;opengl32.lib;AntTweakBar.lib;FBXLoader_d.lib;Raknet_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Assets\AI\MCTS.cpp" />
+    <ClCompile Include="src\Tutorial Projects\ConnectFourGame.cpp" />
+    <ClCompile Include="src\Assets\AI\ConnectFour.cpp" />
+    <ClCompile Include="src\Tutorial Projects\CheckersProject.cpp" />
+    <ClCompile Include="src\Assets\Grid\Grid.cpp" />
+    <ClCompile Include="src\Assets\SkyBox\SkyBox.cpp" />
+    <ClCompile Include="src\Assets\Light\Light.cpp" />
+    <ClCompile Include="src\Assets\FBXModel\FBXModel.cpp" />
+    <ClCompile Include="src\Assets\AntTweakBar\AntTweakBar.cpp" />
+    <ClCompile Include="dep\aieutilities\Gizmos.cpp" />
+    <ClCompile Include="src\Assets\Texture2D\Texture2D.cpp" />
+    <ClCompile Include="src\Tutorial Projects\ProceduralGenTutorial.cpp" />
+    <ClCompile Include="src\Assets\GpuParticle\GpuParticleEmitter.cpp" />
+    <ClCompile Include="src\Assets\RenderTargets\RenderTarget.cpp" />
+    <ClCompile Include="src\Assets\CpuParticle\ParticleEmittor.cpp" />
+    <ClCompile Include="src\Assets\Render\Renderer.cpp" />
+    <ClCompile Include="src\Assets\InputManager\InputManager.cpp" />
+    <ClCompile Include="src\Application.cpp" />
+    <ClCompile Include="src\Assets\Camera\Camera.cpp" />
+    <ClCompile Include="src\Assets\Camera\FlyCamera.cpp" />
+    <ClCompile Include="src\gl_core_4_4.c" />
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\Loaders\ObjLoader\ObjectLoader.cpp" />
+    <ClCompile Include="src\Assets\Planet%28Sphere Code%29\Planet.cpp" />
+    <ClCompile Include="src\Loaders\TinyObjLoader\tiny_obj_loader.cc" />
+    <ClCompile Include="src\Loaders\TinyObjLoader\TinyObjSideProject.cpp" />
+    <ClCompile Include="src\Assets\FBXModel\FBXDrawer\FBXDrawer.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Assets\AI\MCTS.h" />
+    <ClInclude Include="src\Tutorial Projects\ConnectFourGame.h" />
+    <ClInclude Include="src\Assets\AI\AIBase.h" />
+    <ClInclude Include="src\Assets\AI\ConnectFour.h" />
+    <ClInclude Include="src\Assets\Grid\GridVerts.h" />
+    <ClInclude Include="src\Tutorial Projects\CheckersProject.h" />
+    <ClInclude Include="src\Assets\Grid\Grid.h" />
+    <ClInclude Include="src\Assets\SkyBox\SkyBox.h" />
+    <ClInclude Include="src\Assets\Light\Light.h" />
+    <ClInclude Include="src\Assets\FBXModel\FBXModel.h" />
+    <ClInclude Include="src\Assets\AntTweakBar\AntTweakBar.h" />
+    <ClInclude Include="dep\aieutilities\Gizmos.h" />
+    <ClInclude Include="src\Assets\Texture2D\Texture2D.h" />
+    <ClInclude Include="src\Tutorial Projects\ProceduralGenTutorial.h" />
+    <ClInclude Include="src\Assets\GpuParticle\GpuParticleEmitter.h" />
+    <ClInclude Include="src\Assets\GpuParticle\GPUParticles.h" />
+    <ClInclude Include="src\Assets\RenderTargets\RenderTarget.h" />
+    <ClInclude Include="src\Assets\CpuParticle\Particle.h" />
+    <ClInclude Include="src\Assets\CpuParticle\ParticleEmittor.h" />
+    <ClInclude Include="src\Assets\Render\Renderer.h" />
+    <ClInclude Include="src\Assets\InputManager\InputManager.h" />
+    <ClInclude Include="src\Application.h" />
+    <ClInclude Include="src\Assets\Camera\Camera.h" />
+    <ClInclude Include="src\Assets\Camera\FlyCamera.h" />
+    <ClInclude Include="src\gl_core_4_4.h" />
+    <ClInclude Include="src\Loaders\ObjLoader\ObjectLoader.h" />
+    <ClInclude Include="src\Assets\Planet%28Sphere Code%29\Planet.h" />
+    <ClInclude Include="src\Loaders\TinyObjLoader\tiny_obj_loader.h" />
+    <ClInclude Include="src\VertexStructure.h" />
+    <ClInclude Include="src\Loaders\TinyObjLoader\TinyObjSideProject.h" />
+    <ClInclude Include="src\Assets\FBXModel\FBXDrawer\FBXDrawer.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
