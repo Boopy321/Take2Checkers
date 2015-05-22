@@ -7,7 +7,7 @@
 #include <glm\glm.hpp>
 #include <glm/ext.hpp>
 #include "VertexStructure.h"
-#include "Loaders\ObjLoader\ObjectLoader.h"
+
 
 #include <iostream>
 #include <fstream>
@@ -152,40 +152,6 @@ bool Renderer::LoadProgram(std::string a_vertShader, std::string a_fragShader, u
 
 }
 //Returns the index data requried for the model
-unsigned int Renderer::LoadObject(const char* filepath)
-{
-
-	std::vector< Vertex > verts;
-	ObjectLoader* objLoader = new ObjectLoader(filepath, verts);
-
-	glGenVertexArrays(1, &m_VAO);
-	glBindVertexArray(m_VAO);
-
-	glGenBuffers(1, &m_VBO);
-	glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex)* verts.size(), &verts[0], GL_STATIC_DRAW);
-
-	glEnableVertexAttribArray(0);
-	glEnableVertexAttribArray(1);
-	glEnableVertexAttribArray(2);
-	//Position
-	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
-	//Colour
-	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, colour) );// (void*)(sizeof(vec4)* 2 + sizeof(vec3)+sizeof(glm::vec2)));
-	//Normals
-	glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, normal) );
-
-	int indexData = objLoader->getModel()->vIndices.size();
-
-	glGenBuffers(1, &m_IBO);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexData * sizeof(GLuint), &objLoader->getModel()->vIndices[0], GL_STATIC_DRAW);
-
-	glBindVertexArray(0);
-	delete objLoader;
-
-	return indexData;
-}
 
 //Predefined vertex Data. Allows Creation of a 2D Object
 void Renderer::Generate2DObject()

@@ -3,13 +3,10 @@
 struct GLFWwindow;
 class Light;
 
-#include "Tutorial Projects\ConnectFourGame.h"
-#include "Tutorial Projects\ShadowsTutorial.h"
-#include "Tutorial Projects\ProceduralGenTutorial.h"
 #include "Assets/Camera/FlyCamera.h"
 #include <AntTweakBar.h>
 #include "Assets/InputManager/InputManager.h"
-#include "Tutorial Projects\CheckersProject.h"
+#include "Checkers Project\CheckersProject.h"
 
 
 class AntTweakBar;
@@ -54,8 +51,9 @@ private:
 
 	unsigned int m_ProgramID;
 
-	glm::vec4 m_clearColour;
 
+	glm::vec4 m_clearColour;
+	TURN m_turn;
 	Renderer* m_render;
 };
 

@@ -6,6 +6,7 @@
 #include <iostream>
 #include "Assets\Render\Renderer.h"
 
+
 GPUParticleEmitter::GPUParticleEmitter(Renderer* a_render) : m_particles(nullptr), m_maxParticles(0),
 m_position(0, 0, 0),
 m_drawShader(0),

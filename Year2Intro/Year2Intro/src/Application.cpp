@@ -8,11 +8,9 @@
 #include <string>
 #include <fstream>
 #include "Assets\InputManager\InputManager.h"
-#include "Assets\AntTweakBar\AntTweakBar.h"
-#include "Tutorial Projects\CheckersProject.h"
+#include "Checkers Project\CheckersProject.h"
+
 #include "Assets\Render\Renderer.h"
-#include "Assets\Light\Light.h"
-#include "Tutorial Projects\ConnectFourGame.h"
 #include <iostream>
 
 using namespace std;
@@ -120,15 +118,7 @@ bool Application::startUp()
 		
 		//Load Render into Tutorial
 		m_render = new Renderer();
-		//AntTweakbar stuff
-		//m_bar = new AntTweakBar(m_wWidth, m_wHeight, window);
-		//m_bar->AddVec4ToTwBar("ColorScheme", &m_clearColour);
-		//Create the current Project
-		m_light = new Light(m_bar);
-		
-		CurrentProject = new CheckersProject(m_render,m_light);
-		//m_bar->AddFloatToTwBar("Framerate", &m_framerate);
-		//Background color  
+		CurrentProject = new CheckersProject();
 		m_clearColour = glm::vec4(1.0f,1.0f,1.00f,1.0f);
 	
 		return true;
@@ -139,7 +129,7 @@ void Application::update(float a_deltatime)
 
 	glClearColor(m_clearColour.x, m_clearColour.y, m_clearColour.z,1);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	m_light->Update();
+
 	CurrentProject->Update();
 	//Camera
 	_gameCamera.update(a_deltatime);
@@ -148,7 +138,6 @@ void Application::update(float a_deltatime)
 
 	glfwSwapBuffers(window);
 	glfwPollEvents();
-
 
 	m_frameElaspedtime += a_deltatime;
 
@@ -191,7 +180,7 @@ void Application::run()
 		return;
 		
 		//Stats up Gizmos Shape Creation code
-		Gizmos::create();
+		Gizmos::create();//0xFFFFFF, 0xFFFFFF);
 		//m_render->GenerateGrid(100, 100)
 	
 		//allows Depth varible to be used

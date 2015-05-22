@@ -31,7 +31,6 @@ public:
 		float a_startSize, float a_endSize,
 		const glm::vec4& a_startColour, const glm::vec4& a_endColour);
 
-	unsigned int LoadObject(const char* filepath);
 
 	void GenerateGrid(unsigned int rows, unsigned int cols);
 
