@@ -1,40 +1,10 @@
 #pragma once
 #include <vector>
 
-
-class Grid;
-class Texture2D;
-class Light;
-class Renderer;
 class FlyCamera;
 class CheckersPlayer;
-
-enum PIECE
-{
-	NONE,
-	RED,
-	BLACK,
-	REDKING,
-	BLACKKING,
-	REMOVERED,
-	REMOVEBLACK,
-	
-};
-
-enum STATE
-{
-	UNKNOWN,
-	PLAYER_ONE,
-	PLAYER_TWO,
-	DRAW,
-};
-
-enum TURN
-{
-	PLAYER_1,
-	PLAYER_2,
-	GAMEOVER,
-};
+#include "CheckersMovement.h"
+#include "glm\glm.hpp"
 
 class CheckersProject
 {
@@ -48,21 +18,21 @@ public:
 	void SetCheckers();
 	void DeleteToken(PIECE state);
 
+	void GetCurrentBoard(PIECE a_grid[8][8]);
+	//static void setTurn(TURN a_whosTurn);
+	void DrawPieceInHand(int c, int r,PIECE a_type);
+	void DrawSphere(int c, int r);
 private:
 
 	PIECE m_board[8][8];
 	
 	float m_scaleMod;
-	Light* m_light;
-	Renderer* m_render;
-
-	CheckersPlayer* m_player1;
-	CheckersPlayer* m_player2; 
 	
 	unsigned int m_blackcount;
 	unsigned int m_redcount;
 	unsigned int m_totalcount;
 
+	glm::mat4 rotate;
 	int m_cols;
 	int m_rows;
 

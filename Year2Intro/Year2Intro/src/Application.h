@@ -2,11 +2,13 @@
 
 struct GLFWwindow;
 class Light;
+class Renderer;
 
 #include "Assets/Camera/FlyCamera.h"
 #include <AntTweakBar.h>
 #include "Assets/InputManager/InputManager.h"
 #include "Checkers Project\CheckersProject.h"
+#include "Checkers Project\CheckersMovement.h"
 
 
 class AntTweakBar;
@@ -45,7 +47,7 @@ private:
 
 	Light* m_light;
 
-	CheckersProject* CurrentProject;
+	CheckersMovement* CurrentProject;
 
 	InputManager m_keyManager;
 

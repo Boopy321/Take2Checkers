@@ -8,7 +8,7 @@
 #include <string>
 #include <fstream>
 #include "Assets\InputManager\InputManager.h"
-#include "Checkers Project\CheckersProject.h"
+#include "Checkers Project\CheckersMovement.h"
 
 #include "Assets\Render\Renderer.h"
 #include <iostream>
@@ -118,7 +118,7 @@ bool Application::startUp()
 		
 		//Load Render into Tutorial
 		m_render = new Renderer();
-		CurrentProject = new CheckersProject();
+		CurrentProject = new CheckersMovement();
 		m_clearColour = glm::vec4(1.0f,1.0f,1.00f,1.0f);
 	
 		return true;
@@ -130,7 +130,7 @@ void Application::update(float a_deltatime)
 	glClearColor(m_clearColour.x, m_clearColour.y, m_clearColour.z,1);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	CurrentProject->Update();
+	
 	//Camera
 	_gameCamera.update(a_deltatime);
 	//Current Games Draw
@@ -154,7 +154,7 @@ void Application::draw(float a_deltatime)
 {	
 	m_frameCounter++;
 	Gizmos::clear();
-	CurrentProject->Draw(_gameCamera, a_deltatime);
+	CurrentProject->Update(_gameCamera, a_deltatime);
 	Gizmos::draw(_gameCamera.getProjectionView());
 	//m_bar->Draw();
 }

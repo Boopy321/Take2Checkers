@@ -66,6 +66,9 @@
     <ClCompile Include="src\Checkers Project\CheckersNetwork.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Checkers Project\CheckersMovement.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dep\aieutilities\Gizmos.h">
@@ -126,6 +129,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Checkers Project\CheckersNetwork.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Checkers Project\CheckersMovement.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
