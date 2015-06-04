@@ -128,4 +128,4 @@ void CheckersProject::DrawSphere(int c, int r)
 	Gizmos::addSphere(vec3(c* m_scaleMod, 1, r * m_scaleMod), 0.5, 10, 10, glm::vec4(0, 0, 1, 1));
 }
 //To make for Projected moves
-void CheckersProject::ProjectMove(int z,int x, Type)
+//void CheckersProject::ProjectMove(int z,int x, Type)

@@ -4,6 +4,8 @@ class CheckersProject;
 class FlyCamera;
 class CheckersPlayer;
 
+#include <glm/vec2.hpp>
+
 enum PIECE
 {
 	NONE,
@@ -38,11 +40,15 @@ public:
 	CheckersMovement();
 	~CheckersMovement();
 
-	bool isValidMovement();
+	bool isValidMovement(int newposX, int newposZ, PIECE a_type, int oldposX, int oldposZ);
 	void SetCheckers();
-	bool PlacePiece(PIECE a_type, int x, int z);
+	bool PlacePiece(PIECE a_type, int x, int z, int oldposx, int oldposz);
 
+	bool isAbleJump(int newposX, int newposZ, PIECE a_type, int oldposX, int oldposZ);
+	bool isAbleMove(int newposX, int newposZ, PIECE a_type, int oldposX, int oldposZ);
+		bool isDiagonal(glm::vec2 newpos, glm::vec2 oldpos);
 
+	int ManhattanDistance(glm::vec2 a_to, glm::vec2 a_from);
 	void Update(FlyCamera &_gameCamera, float a_deltatime);
 	PIECE GrabPiece(int a, int b);
 private:
@@ -61,6 +67,12 @@ private:
 	CheckersPlayer* m_player1;
 	CheckersPlayer* m_player2;
 	
+	//Vector Control movement
+	glm::vec2 m_moveUpRight;
+	glm::vec2 m_moveDownRight;
+	glm::vec2 m_moveUpLeft;
+	glm::vec2 m_moveDownLeft;
+
 	TURN m_turn;
 	bool m_tileRed;
 

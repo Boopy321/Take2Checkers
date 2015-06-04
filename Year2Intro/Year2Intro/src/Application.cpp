@@ -70,6 +70,9 @@ void APIENTRY openglCallbackFunction(GLenum source,
 Application::Application()
 {
 //Window Sizes So i stop killing myself
+
+	
+
 	m_wHeight = 720;
 	m_wWidth = 1280;
 }

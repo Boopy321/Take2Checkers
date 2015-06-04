@@ -98,7 +98,7 @@ void CheckersPlayer::Update()
 		
 	}
 	
-
+	//Pick ups thg
 	if (m_pickedUp == true)
 	{
 		m_drawstate->DrawPieceInHand(xpos, zpos, m_piece);
@@ -110,7 +110,7 @@ void CheckersPlayer::Update()
 		if (m_pickedUp == false)
 		{
 			//If the action is valid
-			if (m_gamestate->PlacePiece(m_piece, zpos, xpos))
+			if (m_gamestate->PlacePiece(m_piece, zpos, xpos,m_oldPos.x,m_oldPos.y))
 			{
 				if (zpos == m_oldPos.x && xpos == m_oldPos.y)
 				{
@@ -119,7 +119,7 @@ void CheckersPlayer::Update()
 				else
 				{
 					m_piece = PIECE::NONE;
-					m_gamestate->PlacePiece(m_piece, m_oldPos.x, m_oldPos.y);
+ 					m_gamestate->PlacePiece(m_piece,xpos,zpos, m_oldPos.y, m_oldPos.x);
 				}
 			}
 			else
