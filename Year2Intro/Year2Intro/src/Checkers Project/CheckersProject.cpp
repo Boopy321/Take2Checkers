@@ -72,13 +72,21 @@ void CheckersProject::Draw(FlyCamera &_gameCamera, float a_deltatime)
 	{
 		for (int r = 0; r <= m_rows - 1; r++)
 		{
-			if (m_board[c][r] == PIECE::RED || m_board[c][r] == PIECE::REDKING)
+			if (m_board[c][r] == PIECE::RED)
 			{
 				Gizmos::addCylinderFilled(vec3((r * m_scaleMod), 0.5, c * m_scaleMod), 0.5, 0.25, 16, vec4(1,0 , 0, 1), &rotate);
 			}
-			else if (m_board[c][r] == PIECE::BLACK || m_board[c][r] == PIECE::BLACKKING)
+			else if (m_board[c][r] == PIECE::REDKING)
+			{
+				Gizmos::addCylinderFilled(vec3((r * m_scaleMod), 0.5, c * m_scaleMod), 0.75, 0.55, 16, vec4(1, 0, 1, 1), &rotate);
+			}
+			else if (m_board[c][r] == PIECE::BLACK)
 			{
 				Gizmos::addCylinderFilled(vec3((r * m_scaleMod),0.5, c * m_scaleMod), 0.5, 0.25, 16, vec4(0 ,0, 0, 1), &rotate);
+			}
+			else if (m_board[c][r] == PIECE::BLACKKING)
+			{
+				Gizmos::addCylinderFilled(vec3((r * m_scaleMod), 0.5, c * m_scaleMod), 0.75, 0.55, 16, vec4(0, 0, 0, 1), &rotate);
 			}
 			else if (m_board[c][r] == PIECE::POSSIBLEMOVE)
 			{
@@ -86,7 +94,6 @@ void CheckersProject::Draw(FlyCamera &_gameCamera, float a_deltatime)
 			}
 		}
 	}
-
 
 }
 
@@ -111,9 +118,13 @@ void CheckersProject::GetCurrentBoard(PIECE a_grid[8][8])
 
 void CheckersProject::DrawPieceInHand(int x, int z, PIECE a_type)
 {
-	if (a_type == PIECE::RED || a_type  == PIECE::REDKING)
+	if (a_type == PIECE::RED)
 	{
 		Gizmos::addCylinderFilled(vec3((x * m_scaleMod), 4, z * m_scaleMod), 0.5, 0.25, 16, vec4(0, 1, 0, 1), &rotate);
+	}
+	else if (a_type == PIECE::REDKING)
+	{
+		Gizmos::addCylinderFilled(vec3((x * m_scaleMod), 4, z * m_scaleMod), 0.5, 0.25, 16, vec4(1, 1, 0, 1), &rotate);
 	}
 	else if (a_type == PIECE::BLACK || a_type == PIECE::BLACKKING)
 	{

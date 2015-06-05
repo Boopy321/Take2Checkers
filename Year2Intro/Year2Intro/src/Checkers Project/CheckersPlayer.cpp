@@ -23,7 +23,6 @@ CheckersPlayer::CheckersPlayer(CheckersProject* a_drawstate,CheckersMovement* a_
 	m_pickedUp = false;
 	m_drawstate = a_drawstate;
 	m_gamestate = a_gamestate;
-
 }
 
 CheckersPlayer::~CheckersPlayer()
@@ -77,11 +76,15 @@ void CheckersPlayer::Update()
 		m_move = false;
 		m_pickedUp = !m_pickedUp;
 	}
-
+	//MouseClick code
+	//if (glfwGetMouseButton(m_pWindow, 0) == GLFW_PRESS)
+	//{
+	//
+	//}
 	if (m_timer <= 0)
 	{
 		m_move = true;
-		m_timer = 2;
+		m_timer = 1.5f;
 	}
 
 	if (m_pickedUp == true && m_piece == PIECE::NONE)
@@ -91,7 +94,6 @@ void CheckersPlayer::Update()
 		if (m_piece != PIECE::NONE)
 		{
 			m_oldPos = glm::vec2(zpos, xpos);
-			
 		}
 		else
 			m_pickedUp = false;
@@ -110,12 +112,13 @@ void CheckersPlayer::Update()
 		if (m_pickedUp == false)
 		{
 			//If the action is valid
-			if (m_gamestate->PlacePiece(m_piece, zpos, xpos,m_oldPos.x,m_oldPos.y) == true)
+			if (m_gamestate->PlacePiece(m_piece, zpos, xpos, m_oldPos.x, m_oldPos.y) == true)
 			{
 				m_piece = PIECE::NONE;
 			}
 			else
-				m_pickedUp = true;
+				m_piece = PIECE::NONE;
+				//m_pickedUp = true;
 		}
 	}
 	
