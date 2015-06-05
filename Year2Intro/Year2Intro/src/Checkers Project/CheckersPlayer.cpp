@@ -35,28 +35,28 @@ void CheckersPlayer::Update()
 {
 	
 
-	if (glfwGetKey(m_pWindow, GLFW_KEY_UP) == GLFW_PRESS && m_move == true)
+	if (glfwGetKey(m_pWindow, GLFW_KEY_DOWN) == GLFW_PRESS && m_move == true)
 	{
 		if (zpos != 0)
 			zpos -= 1;
 		m_move = false;
 	}
 
-	if (glfwGetKey(m_pWindow, GLFW_KEY_DOWN) == GLFW_PRESS && m_move == true)
+	if (glfwGetKey(m_pWindow, GLFW_KEY_UP) == GLFW_PRESS && m_move == true)
 	{
 		if (zpos != 7)
 			zpos += 1;
 		m_move = false;
 	}
 
-	if (glfwGetKey(m_pWindow, GLFW_KEY_LEFT) == GLFW_PRESS && m_move == true)
+	if (glfwGetKey(m_pWindow, GLFW_KEY_RIGHT) == GLFW_PRESS && m_move == true)
 	{
 		if (xpos != 0)
 			xpos -= 1;
 		m_move = false;
 	}
 
-	if (glfwGetKey(m_pWindow, GLFW_KEY_RIGHT) == GLFW_PRESS && m_move == true)
+	if (glfwGetKey(m_pWindow, GLFW_KEY_LEFT) == GLFW_PRESS && m_move == true)
 	{
 		if (xpos != 7)
 			xpos += 1;
@@ -81,7 +81,7 @@ void CheckersPlayer::Update()
 	if (m_timer <= 0)
 	{
 		m_move = true;
-		m_timer = 1;
+		m_timer = 2;
 	}
 
 	if (m_pickedUp == true && m_piece == PIECE::NONE)
@@ -110,20 +110,12 @@ void CheckersPlayer::Update()
 		if (m_pickedUp == false)
 		{
 			//If the action is valid
-			if (m_gamestate->PlacePiece(m_piece, zpos, xpos,m_oldPos.x,m_oldPos.y))
+			if (m_gamestate->PlacePiece(m_piece, zpos, xpos,m_oldPos.x,m_oldPos.y) == true)
 			{
-				if (zpos == m_oldPos.x && xpos == m_oldPos.y)
-				{
-					///DONT DELETE THE OLD SPACE if its the same spot
-				}
-				else
-				{
-					m_piece = PIECE::NONE;
- 					m_gamestate->PlacePiece(m_piece,xpos,zpos, m_oldPos.y, m_oldPos.x);
-				}
+				m_piece = PIECE::NONE;
 			}
 			else
-					m_pickedUp == true;
+				m_pickedUp = true;
 		}
 	}
 	

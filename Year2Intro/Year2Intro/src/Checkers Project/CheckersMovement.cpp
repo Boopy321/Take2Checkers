@@ -38,6 +38,12 @@ bool CheckersMovement::isValidMovement(int newposX, int newposZ, PIECE a_type, i
 
   	if (isAbleMove(newposX, newposZ, a_type, oldposX, oldposZ))
 	{
+		m_turn = (m_turn == TURN::PLAYER_1) ? TURN::PLAYER_2 : TURN::PLAYER_1;
+		return true;
+	}
+	else if (isAbleJump(newposX, newposZ, a_type, oldposX, oldposZ))
+	{
+		m_turn = (m_turn == TURN::PLAYER_1) ? TURN::PLAYER_2 : TURN::PLAYER_1;
 		return true;
 	}
 	else
@@ -193,7 +199,7 @@ bool CheckersMovement::PlacePiece(PIECE a_type, int x, int z,int oldposx,int old
 	if (isValidMovement(x, z, a_type, oldposx, oldposz))
 	{
 		m_board[x][z] = a_type;
-		m_drawboard->GetCurrentBoard(m_board);
+		ClearSpot(oldposz, oldposx);
 		return true;
 	}
 	else
@@ -204,16 +210,32 @@ bool CheckersMovement::PlacePiece(PIECE a_type, int x, int z,int oldposx,int old
 
 bool CheckersMovement::isAbleJump(int newposX,int newposZ,PIECE a_type, int oldposX, int oldposZ )
 {
-	return true;
+	if (m_board[newposX][newposZ] == PIECE::NONE)
+	{
+		if (ManhattanDistance(glm::vec2(newposX, newposZ), glm::vec2(oldposX, oldposZ)) == 4)
+		{
+			if (isDiagonal(glm::vec2(newposX, newposZ), glm::vec2(oldposX, oldposZ)))
+			{
+				if (isPieceThere()
+				{
+					return true;
+				}
+				
+			}
+			else
+			{
+				return false;
+			}
+		}
 
-
+	}
 }
 bool CheckersMovement::isAbleMove(int newposX,int newposZ,PIECE a_type,int oldposX,int oldposZ)
 {
 	
 	if (m_board[newposX][newposZ] == PIECE::NONE)
 	{
-		if (ManhattanDistance(glm::vec2(newposX,newposZ),glm::vec2(oldposX,oldposZ)) == 1)
+		if (ManhattanDistance(glm::vec2(newposX,newposZ),glm::vec2(oldposX,oldposZ)) == 2)
 		{
 			if (isDiagonal(glm::vec2(newposX, newposZ), glm::vec2(oldposX, oldposZ)))
 			{
@@ -226,6 +248,8 @@ bool CheckersMovement::isAbleMove(int newposX,int newposZ,PIECE a_type,int oldpo
 		}
 		
 	}
+
+		return false;
 }
 
 bool CheckersMovement::isDiagonal(glm::vec2 newpos, glm::vec2 oldpos)
@@ -241,6 +265,24 @@ bool CheckersMovement::isDiagonal(glm::vec2 newpos, glm::vec2 oldpos)
 		return true;
 }
 
+bool CheckersMovement::isPieceThere(glm::vec2 newpos, glm::vec2 oldpos)
+{
+	//Check if there was a piece between them
+	int xIncrement = newpos.x - oldpos.x;
+	int yIncrement = newpos.y - oldpos.y;
+	
+	int zpos = (int)newpos.x - xIncrement;
+	int xpos = (int)newpos.y - yIncrement;
+	
+	if (m_board[zpos][xpos] == PIECE::NONE)
+	{
+		return false;
+	}
+	else
+		return true;
+
+}
+
 //Manhattan Distance
 int CheckersMovement::ManhattanDistance(glm::vec2 a_to, glm::vec2 a_from)
 {
@@ -254,13 +296,19 @@ int CheckersMovement::ManhattanDistance(glm::vec2 a_to, glm::vec2 a_from)
 	
 	int Distance;
 
-	ReturnX = (ValueX1 - ValueX2);
-	ReturnY = (ValueY1 - ValueY2);
+	ReturnX = abs(ValueX1 - ValueX2);
+	ReturnY = abs(ValueY1 - ValueY2);
 
-	Distance = ReturnX + ReturnY;
+	Distance = (ReturnX + ReturnY);
 
 	if (Distance < 0)
 		Distance = -Distance;
-
+	
 	return Distance;
+}
+
+void CheckersMovement::ClearSpot(int a_oldz , int a_oldx)
+{
+	m_board[a_oldx][a_oldz] = PIECE::NONE;
+	m_drawboard->GetCurrentBoard(m_board);
 }
