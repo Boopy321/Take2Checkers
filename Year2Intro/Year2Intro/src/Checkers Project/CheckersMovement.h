@@ -42,15 +42,20 @@ public:
 	//Iniatiate the board
 	void SetCheckers();
 
-
 	bool PlacePiece(PIECE a_type, int x, int z, int oldposx, int oldposz);
 	
-	bool isValidMovement(int newposX, int newposZ, PIECE a_type, int oldposX, int oldposZ);
-	bool isAbleJump(int newposX, int newposZ, PIECE a_type, int oldposX, int oldposZ);
-	bool isAbleMove(int newposX, int newposZ, PIECE a_type, int oldposX, int oldposZ);
-	bool isDiagonal(glm::vec2 newpos, glm::vec2 oldpos, PIECE a_type);
+	bool isValidMovement(glm::vec2 a_newPos, PIECE a_type, glm::vec2 a_oldpos);
+	bool isAbleJump(glm::vec2 a_newPos, PIECE a_type, glm::vec2 a_oldpos);
+	bool isAbleMove(glm::vec2 a_newPos, PIECE a_type, glm::vec2 a_oldpos);
+	bool isDiagonal(glm::vec2 a_newpos, glm::vec2 oldpos, PIECE a_type);
 	bool isPieceThere(glm::vec2 newpos, glm::vec2 oldpos);
-	bool CheckersMovement::IsPieceNearby(int newposz, int newposx);
+	bool IsPieceNearby(int newposz, int newposx);
+	bool DoubleJump(glm::vec2 a_newpos , glm::vec2 dir, PIECE a_type);
+	//Instead of Auto Changing
+
+	void LagTime();
+	void SwitchTurn();
+	
 
 	int ManhattanDistance(glm::vec2 a_to, glm::vec2 a_from);
 
@@ -65,9 +70,9 @@ private:
 
 	PIECE m_board[8][8];
 
-	unsigned int m_blackcount;
-	unsigned int m_redcount;
-	unsigned int m_totalcount;
+	int m_blackcount;
+	int m_redcount;
+	int m_totalcount;
 
 	int m_cols;
 	int m_rows;
@@ -75,11 +80,12 @@ private:
 	CheckersPlayer* m_player1;
 	CheckersPlayer* m_player2;
 
-	//Vector Control movement
 	glm::vec2 m_moveUpRight;
 	glm::vec2 m_moveDownRight;
 	glm::vec2 m_moveUpLeft;
 	glm::vec2 m_moveDownLeft;
+
+	
 	//Enum Turn Manager
 	TURN m_turn;
 

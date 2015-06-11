@@ -17,12 +17,16 @@ CheckersPlayer::CheckersPlayer(CheckersProject* a_drawstate,CheckersMovement* a_
 	m_move = true;
 	m_timer = 1;
 	
-	m_piece == PIECE::NONE;
+	m_piece = PIECE::NONE;
 	
 	
 	m_pickedUp = false;
 	m_drawstate = a_drawstate;
 	m_gamestate = a_gamestate;
+
+
+
+
 }
 
 CheckersPlayer::~CheckersPlayer()
@@ -62,13 +66,6 @@ void CheckersPlayer::Update()
 		m_move = false;
 	}
 
-
-	if (glfwGetKey(m_pWindow, GLFW_KEY_ENTER) == GLFW_PRESS && m_move == true)
-	{
-		//THIS WILL CALL A SELECT OR PICK UP PIECE
-
-		
-	}
 	
 	if (glfwGetKey(m_pWindow, GLFW_KEY_SPACE) == GLFW_PRESS && m_move == true)
 	{
@@ -76,17 +73,14 @@ void CheckersPlayer::Update()
 		m_move = false;
 		m_pickedUp = !m_pickedUp;
 	}
-	//MouseClick code
-	//if (glfwGetMouseButton(m_pWindow, 0) == GLFW_PRESS)
-	//{
-	//
-	//}
+
 	if (m_timer <= 0)
 	{
 		m_move = true;
 		m_timer = 1.5f;
 	}
 
+	//Grabs the piece if there is a piece at the spot
 	if (m_pickedUp == true && m_piece == PIECE::NONE)
 	{
 		m_piece = m_gamestate->GrabPiece(zpos, xpos);
@@ -112,7 +106,7 @@ void CheckersPlayer::Update()
 		if (m_pickedUp == false)
 		{
 			//If the action is valid
-			if (m_gamestate->PlacePiece(m_piece, zpos, xpos, m_oldPos.x, m_oldPos.y) == true)
+			if (m_gamestate->PlacePiece(m_piece, zpos, xpos, m_oldPos.x, m_oldPos.y) == true )
 			{
 				m_piece = PIECE::NONE;
 			}
@@ -125,3 +119,5 @@ void CheckersPlayer::Update()
 	m_drawstate->DrawSphere(xpos, zpos);
 	m_timer -= 0.1f;
 }
+
+

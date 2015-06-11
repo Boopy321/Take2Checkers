@@ -5,7 +5,8 @@ struct GLFWwindow;
 class CheckersProject;
 class CheckersMovement;
 #include "CheckersMovement.h"
-#include "glm\vec2.hpp"
+#include "glm\vec2.hpp"#include "RakPeerInterface.h"
+
 
 class CheckersPlayer
 {
@@ -18,19 +19,27 @@ public:
 
 	void Update();
 
-	float xpos, ypos, zpos;
+	int xpos, ypos, zpos;
 private:
 
 	bool m_move;
 	bool m_pickedUp;
 	bool m_flag;
+	bool m_possibleDouble;
 
 	float vForward, vRight;
 	float moveDir;
 	float m_timer;
 	PIECE m_piece;
+
+	//Vector Control movement
+
 	glm::vec2 m_oldPos;
+
 	CheckersMovement* m_gamestate;
+
 	CheckersProject* m_drawstate;
+
+	
 	GLFWwindow* m_pWindow;
 };

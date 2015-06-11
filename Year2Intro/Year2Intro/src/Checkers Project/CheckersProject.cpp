@@ -46,21 +46,25 @@ void CheckersProject::Draw(FlyCamera &_gameCamera, float a_deltatime)
 	Gizmos::addCylinderFilled(vec3(5.25, -1, 5.25), 10, 0.75, 4, vec4(0.545, 0.270, 0.074, 1), &rotate);
 
 	///Draw the Grid
-	for (float c = 0; c <= m_cols- 1; c++) {
-
-		for (float r = 0; r <= m_rows - 1; r++) {
-				
-
+	for (float c = 0; c <= m_cols- 1; c++)
+	{
+		for (float r = 0; r <= m_rows - 1; r++)
+		{	
 			if (m_tileRed == false)
 			{
 				Gizmos::addCylinderFilled(vec3((r * m_scaleMod), 0, c * m_scaleMod), 1, 0.25, 4, vec4(0, 0, 0, 1), &rotate);
 				m_tileRed = true;
 			}
-			else
+			else if (m_tileRed == true)
 			{
 				Gizmos::addCylinderFilled(vec3(r * m_scaleMod,0, c *m_scaleMod), 1, 0.25, 4, vec4(1, 0, 0, 1), &rotate);
 				m_tileRed = false;
 			}
+			
+			//if (m_board[(int)c][(int)r] == PIECE::POSSIBLEMOVE)
+			//{
+			//	Gizmos::addCylinderFilled(vec3(r * m_scaleMod, 0, c *m_scaleMod), 1, 0.25, 4, vec4(0, 1, 0, 1), &rotate);
+			//}
 		}
 		m_tileRed = !m_tileRed;
 	}
