@@ -61,10 +61,6 @@ void CheckersProject::Draw(FlyCamera &_gameCamera, float a_deltatime)
 				m_tileRed = false;
 			}
 			
-			//if (m_board[(int)c][(int)r] == PIECE::POSSIBLEMOVE)
-			//{
-			//	Gizmos::addCylinderFilled(vec3(r * m_scaleMod, 0, c *m_scaleMod), 1, 0.25, 4, vec4(0, 1, 0, 1), &rotate);
-			//}
 		}
 		m_tileRed = !m_tileRed;
 	}

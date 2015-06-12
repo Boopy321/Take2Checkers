@@ -5,7 +5,7 @@ struct GLFWwindow;
 class CheckersProject;
 class CheckersMovement;
 #include "CheckersMovement.h"
-#include "glm\vec2.hpp"#include "RakPeerInterface.h"
+#include "glm\vec2.hpp"
 
 
 class CheckersPlayer
