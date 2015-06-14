@@ -3,9 +3,9 @@
 class CheckersProject;
 class FlyCamera;
 class CheckersPlayer;
-
+#include <vector>
 #include <glm/vec2.hpp>
-
+#include <list>
 enum PIECE
 {
 	NONE,
@@ -79,7 +79,7 @@ public:
 private:
 	
 	bool m_valid;
-	bool m_jumps[12];
+	bool m_jump;
 	bool m_tileRed;
 
 	PIECE m_board[8][8];
@@ -99,7 +99,7 @@ private:
 	glm::ivec2 m_moveUpLeft;
 	glm::ivec2 m_moveDownLeft;
 
-	
+	std::list<glm::ivec2> m_posJumps;
 	//Enum Turn Manager
 	TURN m_turn;
 

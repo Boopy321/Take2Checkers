@@ -2,7 +2,7 @@
 #include "CheckersProject.h"
 #include "Assets\Camera\FlyCamera.h"
 #include "CheckersPlayer.h"
-
+#include <vector>
 CheckersMovement::CheckersMovement()
 {
 	m_totalcount = 12;
@@ -17,6 +17,7 @@ CheckersMovement::CheckersMovement()
 	m_player1 = new CheckersPlayer(m_drawboard,this);
 	m_player2 = new CheckersPlayer(m_drawboard,this);
 
+	m_jump = false;
 	m_turn = TURN::PLAYER_1;
 	//Up on the Y Axis
 	m_moveUpRight = glm::ivec2(1, -1);
@@ -197,6 +198,19 @@ PIECE CheckersMovement::GrabPiece(int column, int row)
 bool CheckersMovement::PlacePiece(PIECE a_type, int x, int z,int oldposx,int oldposz)
 {
 	
+	if (m_jump == true)
+	{
+		glm::ivec2 possibleoption = glm::ivec2(x, z);
+		for (int i = 0; i < m_posJumps.size(); ++i)
+		{ 
+			if (m_posJumps[i] == possibleoption && isValidMovement(glm::ivec2(x, z), a_type, glm::ivec2(oldposx, oldposz)))
+			{
+				return true;
+			}
+		}
+	}
+
+	
 	if (isValidMovement(glm::ivec2(x,z),a_type,glm::ivec2(oldposx, oldposz)))
 	{
 		m_board[x][z] = a_type;
@@ -243,16 +257,6 @@ bool CheckersMovement::isAbleMove(glm::ivec2 a_newPos, PIECE a_type, glm::ivec2 
 				return false;
 		}
 	}
-	//else if (m_board[a_newPos.x][a_newPos.y] == PIECE::POSSIBLEMOVE)
-	//{
-	//	if (ManhattanDistance(a_newPos, a_oldpos) == 2)
-	//	{
-	//		if (isDiagonal(a_newPos, a_oldpos, a_type))
-	//			return true;
-	//		else
-	//			return false;
-	//	}
-	//}
 	else
 		return false;
 }
@@ -361,7 +365,8 @@ bool CheckersMovement::DoubleJump(glm::ivec2 a_newPos, glm::ivec2 dir, PIECE a_t
 void CheckersMovement::SwitchTurn()
 {
 	//Clear Possible moves 
-	memset(m_jumps, 0, sizeof(m_jumps));
+	m_jump = false;
+	m_posJumps.empty();
 	ClearPossibleMoves();
 	ShowPossibleMoves();
 	m_turn = (m_turn == TURN::PLAYER_1) ? TURN::PLAYER_2 : TURN::PLAYER_1;
@@ -413,48 +418,47 @@ void CheckersMovement::ShowPossibleMoves()
 						//Checks for Possible jumps
 						if (isValidMovement(movePosUpRight + m_moveUpRight, current, pos))
 						{
-							m_jumps[index] = true;
+							m_jump = true;
+							m_posJumps.push_back(movePosUpRight + m_moveUpRight);
 								index++;
 						}
 
 						if (isValidMovement(movePosUpLeft + m_moveUpLeft, current, pos))
 						{
-							m_jumps[index] = true;
+							m_jump = true;
+							m_posJumps.push_back(movePosUpLeft + m_moveUpLeft);
 							index++;
 						}
 						break;
 
 					case REDKING:
-
-						//Possible Move check
+						//Possible Jump check
 						possibleMoveUpRight = isValidMovement(movePosUpRight, current, pos);
 						possibleMoveUpleft = isValidMovement(movePosUpLeft, current, pos);
-						possibleMoveDownRight = isValidMovement(movePosDownRight, current, pos);
 						possibleMoveDownLeft = isValidMovement(movePosDownLeft, current, pos);
+						possibleMoveDownRight = isValidMovement(movePosDownRight, current, pos);
 
-						//Possible Jump check
 						//Checks for Possible jumps 
 						if (isValidMovement(movePosUpRight + m_moveUpRight, current, pos))
 						{
-							m_jumps[index] = true;
+							m_posJumps.push_back(movePosUpRight + m_moveUpRight);
 							index++;
 						}
 
 						if (isValidMovement(movePosUpLeft + m_moveUpLeft, current, pos))
 						{
-							m_jumps[index] = true;
+							m_posJumps.push_back(movePosUpLeft + m_moveUpLeft);
 							index++;
 						}
-
 						if (isValidMovement(movePosDownRight + m_moveDownRight, current, pos))
 						{
-							m_jumps[index] = true;
+							m_posJumps.push_back(movePosDownRight + m_moveDownRight);
 							index++;
 						}
 
 						if (isValidMovement(movePosDownLeft + m_moveDownLeft, current, pos))
 						{
-							m_jumps[index] = true;
+							m_posJumps.push_back(movePosDownLeft + m_moveDownLeft);
 							index++;
 						}
 						break;
@@ -485,6 +489,17 @@ void CheckersMovement::ShowPossibleMoves()
 				{
 					m_board[movePosDownLeft.x][movePosDownLeft.y] = PIECE::POSSIBLEMOVE;
 					possibleMoveUpRight = false;
+				}
+				for (int i = 0; i < m_posJumps.size(); ++i)
+				{
+					glm::ivec2 jumps = m_posJumps[i];
+					if (Compare(jumps, compare))
+					{
+						m_board[jumps.x][jumps.y] = PIECE::POSSIBLEMOVE;
+					}
+					else
+						m_posJumps.remove(jumps);
+					
 				}
 			}
 		}
