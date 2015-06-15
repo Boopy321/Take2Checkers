@@ -57,16 +57,16 @@
     <ClCompile Include="src\Assets\Render\Renderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Checkers Project\CheckersProject.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Checkers Project\CheckersPlayer.cpp">
+    <ClCompile Include="src\Checkers Project\CheckersMovement.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Checkers Project\CheckersNetwork.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Checkers Project\CheckersMovement.cpp">
+    <ClCompile Include="src\Checkers Project\CheckersPlayer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Checkers Project\CheckersProject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -122,16 +122,16 @@
     <ClInclude Include="src\Assets\Render\Renderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Checkers Project\CheckersProject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Checkers Project\CheckersPlayer.h">
+    <ClInclude Include="src\Checkers Project\CheckersMovement.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Checkers Project\CheckersNetwork.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Checkers Project\CheckersMovement.h">
+    <ClInclude Include="src\Checkers Project\CheckersPlayer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Checkers Project\CheckersProject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

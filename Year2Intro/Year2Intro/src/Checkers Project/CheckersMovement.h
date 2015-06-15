@@ -71,7 +71,10 @@ public:
 	//Gets the Distance between the 2 vectors
 	int ManhattanDistance(glm::ivec2 a_to, glm::ivec2 a_from);
 	//Wipes the spot at that location
+	
 	void ClearSpot(int a_oldz, int a_oldx);
+
+	bool CheckersMovement::ShowCurrentPieceMoves(glm::ivec2 oldpos, PIECE a_type);
 
 	void Update(FlyCamera &_gameCamera, float a_deltatime);
 	//Grabs what
@@ -80,8 +83,9 @@ private:
 	
 	bool m_valid;
 	bool m_jump;
+	bool m_localJump;
 	bool m_tileRed;
-
+	bool m_delete;
 	PIECE m_board[8][8];
 
 	int m_blackcount;
@@ -99,7 +103,9 @@ private:
 	glm::ivec2 m_moveUpLeft;
 	glm::ivec2 m_moveDownLeft;
 
-	std::list<glm::ivec2> m_posJumps;
+	std::vector<glm::ivec2> m_deletemoves;
+	std::vector<glm::ivec2> m_posJumps;
+	std::vector<glm::ivec2> m_posMoves;
 	//Enum Turn Manager
 	TURN m_turn;
 
