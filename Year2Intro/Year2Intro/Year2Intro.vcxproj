@@ -53,13 +53,13 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>GLM_SWIZZLE;GLM_FORCE_PURE;WIN32;_DEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(ProjectDir)dep\aieutilities;$(ProjectDir)dep\glm;$(ProjectDir)dep\glfw-3.1.bin.WIN32\include;$(ProjectDir)src;$(ProjectDir)dep/stb-master;$(ProjectDir)dep\AntTweakBar\include;$(ProjectDir)dep\FBXLoader;$(ProjectDir)dep\Raknet;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)dep\aieutilities;$(ProjectDir)dep\glm;$(ProjectDir)dep\glfw-3.1.bin.WIN32\include;$(ProjectDir)src;$(ProjectDir)dep/stb-master;$(ProjectDir)dep\AntTweakBar\include;$(ProjectDir)dep\FBXLoader;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(ProjectDir)dep\glfw-3.1.bin.WIN32\lib-vc2013;$(ProjectDir)\dep\AntTweakBar\lib;$(ProjectDir)\dep\FBXLoader;$(ProjectDir)\dep\Raknet;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glfw3.lib;opengl32.lib;AntTweakBar.lib;FBXLoader_d.lib;Raknet_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)dep\glfw-3.1.bin.WIN32\lib-vc2013;$(ProjectDir)\dep\AntTweakBar\lib;$(ProjectDir)\dep\FBXLoader;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glfw3.lib;opengl32.lib;AntTweakBar.lib;FBXLoader_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -81,11 +81,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Checkers Project\MCTS_Checker.cpp" />
     <ClCompile Include="src\Checkers Project\CheckersMovement.cpp" />
     <ClCompile Include="src\Assets\AI\MCTS.cpp" />
     <ClCompile Include="src\Assets\Render\Renderer.cpp" />
     <ClCompile Include="src\Assets\AI\ConnectFour.cpp" />
-    <ClCompile Include="src\Checkers Project\CheckersNetwork.cpp" />
     <ClCompile Include="src\Checkers Project\CheckersPlayer.cpp" />
     <ClCompile Include="src\Checkers Project\CheckersProject.cpp" />
     <ClCompile Include="src\Assets\SkyBox\SkyBox.cpp" />
@@ -101,12 +101,12 @@
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Checkers Project\MCTS_Checker.h" />
     <ClInclude Include="src\Checkers Project\CheckersMovement.h" />
     <ClInclude Include="src\Assets\AI\MCTS.h" />
     <ClInclude Include="src\Assets\Render\Renderer.h" />
     <ClInclude Include="src\Assets\AI\AIBase.h" />
     <ClInclude Include="src\Assets\AI\ConnectFour.h" />
-    <ClInclude Include="src\Checkers Project\CheckersNetwork.h" />
     <ClInclude Include="src\Checkers Project\CheckersPlayer.h" />
     <ClInclude Include="src\Checkers Project\CheckersProject.h" />
     <ClInclude Include="src\Assets\SkyBox\SkyBox.h" />

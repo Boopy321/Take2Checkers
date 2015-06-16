@@ -1,9 +1,10 @@
-
+//poo
 #include "GLFW\glfw3.h"
 #include "Checkers Project\CheckersPlayer.h"
 #include "CheckersProject.h"
 
 #include "glm\glm.hpp"
+#include <iostream>
 
 CheckersPlayer::CheckersPlayer(CheckersProject* a_drawstate,CheckersMovement* a_gamestate)
 {
@@ -11,7 +12,7 @@ CheckersPlayer::CheckersPlayer(CheckersProject* a_drawstate,CheckersMovement* a_
 	xpos = 4;
 	ypos = 2;
 	zpos = 4;
-
+	m_canDrop = true;
 	m_oldPos = glm::vec2(0, 0);
 	
 	m_move = true;
@@ -23,10 +24,6 @@ CheckersPlayer::CheckersPlayer(CheckersProject* a_drawstate,CheckersMovement* a_
 	m_pickedUp = false;
 	m_drawstate = a_drawstate;
 	m_gamestate = a_gamestate;
-
-
-
-
 }
 
 CheckersPlayer::~CheckersPlayer()
@@ -80,6 +77,9 @@ void CheckersPlayer::Update()
 		m_timer = 1.5f;
 	}
 
+	std::cout << zpos <<","<< xpos<< std::endl;
+
+	
 	//Grabs the piece if there is a piece at the spot
 	if (m_pickedUp == true && m_piece == PIECE::NONE)
 	{
@@ -108,11 +108,27 @@ void CheckersPlayer::Update()
 			//If the action is valid
 			if (m_gamestate->PlacePiece(m_piece, zpos, xpos, m_oldPos.x, m_oldPos.y) == true )
 			{
+				//Double Jump
+				m_gamestate->Clear();
+				
+				if (m_gamestate->ShowCurrentPieceMoves(glm::ivec2(zpos, xpos), m_piece) && m_gamestate->m_jump == true)
+				{
+					m_oldPos.x = zpos;
+					m_oldPos.y = xpos;
+					m_pickedUp = true;
+					m_canDrop = false;
+				}
+				else
+				{
+					m_piece = PIECE::NONE;
+					m_canDrop = true;
+					m_gamestate->SwitchTurn();
+				}
+			}
+			else if (m_canDrop == true)
+			{
 				m_piece = PIECE::NONE;
 			}
-			else
-				m_piece = PIECE::NONE;
-				//m_pickedUp = true;
 		}
 	}
 	

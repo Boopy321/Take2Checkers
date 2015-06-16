@@ -24,6 +24,7 @@ private:
 
 	bool m_move;
 	bool m_pickedUp;
+	bool m_canDrop;
 	bool m_flag;
 	bool m_possibleDouble;
 

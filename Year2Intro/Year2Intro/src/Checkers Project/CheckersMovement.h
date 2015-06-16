@@ -3,9 +3,9 @@
 class CheckersProject;
 class FlyCamera;
 class CheckersPlayer;
-
+#include <vector>
 #include <glm/vec2.hpp>
-
+#include <list>
 enum PIECE
 {
 	NONE,
@@ -39,7 +39,7 @@ public:
 
 	CheckersMovement();
 	~CheckersMovement();
-	//Iniatiate the board
+	//Iniatiate the board with poo
 	void SetCheckers();
 
 	bool PlacePiece(PIECE a_type, int x, int z, int oldposx, int oldposz);
@@ -51,9 +51,12 @@ public:
 	bool isPieceThere(glm::ivec2 newpos, glm::ivec2 oldpos);
 	bool IsPieceNearby(int newposz, int newposx);
 	bool IsForwardMovement(glm::ivec2 a_newpos, glm::ivec2 a_oldpos);
+	bool IsBackwardMovement(glm::ivec2 a_newpos, glm::ivec2 a_oldpos);
 	bool DoubleJump(glm::ivec2 a_newpos , glm::ivec2 dir, PIECE a_type);
 	//Instead of Auto Changing
 
+	//Wipes all vectors and clears possible moves
+	void Clear();
 	//Takes a Position vector and Compares it with the
 	//lowest possible and highest possible numbers in the grid
 	bool Compare(glm::ivec2 CurValue, glm::ivec2 MinMax);
@@ -71,17 +74,23 @@ public:
 	//Gets the Distance between the 2 vectors
 	int ManhattanDistance(glm::ivec2 a_to, glm::ivec2 a_from);
 	//Wipes the spot at that location
+	
 	void ClearSpot(int a_oldz, int a_oldx);
+
+	bool CheckersMovement::ShowCurrentPieceMoves(glm::ivec2 oldpos, PIECE a_type);
 
 	void Update(FlyCamera &_gameCamera, float a_deltatime);
 	//Grabs what
 	PIECE GrabPiece(int a, int b);
+
+	bool m_jump;
 private:
 	
 	bool m_valid;
-	bool m_jumps[12];
+	
+	bool m_localJump;
 	bool m_tileRed;
-
+	bool m_delete;
 	PIECE m_board[8][8];
 
 	int m_blackcount;
@@ -99,7 +108,9 @@ private:
 	glm::ivec2 m_moveUpLeft;
 	glm::ivec2 m_moveDownLeft;
 
-	
+	std::vector<glm::ivec2> m_deletemoves;
+	std::vector<glm::ivec2> m_posJumps;
+	std::vector<glm::ivec2> m_posMoves;
 	//Enum Turn Manager
 	TURN m_turn;
 

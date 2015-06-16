@@ -2,7 +2,7 @@
 #include "CheckersProject.h"
 #include "Assets\Camera\FlyCamera.h"
 #include "CheckersPlayer.h"
-
+#include <vector>
 CheckersMovement::CheckersMovement()
 {
 	m_totalcount = 12;
@@ -16,6 +16,9 @@ CheckersMovement::CheckersMovement()
 	
 	m_player1 = new CheckersPlayer(m_drawboard,this);
 	m_player2 = new CheckersPlayer(m_drawboard,this);
+
+	m_jump = false;
+	m_delete = false;
 
 	m_turn = TURN::PLAYER_1;
 	//Up on the Y Axis
@@ -35,17 +38,41 @@ CheckersMovement::~CheckersMovement()
 //is literally its name
 bool CheckersMovement::isValidMovement(glm::ivec2 a_newPos, PIECE a_type, glm::ivec2 a_oldpos)
 {
-
-	//Recursive Function based on new posistion Does not check for a Triple jump
-	if (isAbleJump(a_newPos, a_type, a_oldpos))
-		return true;
-
-	else if (isAbleMove(a_newPos, a_type, a_oldpos))
+	if (m_turn == TURN::PLAYER_1)
 	{
-		return true;
+		if (m_board[a_newPos.x][a_newPos.y] == NONE || m_board[a_newPos.x][a_newPos.y] == POSSIBLEMOVE)
+		{
+			//Recursive Function based on new posistion Does not check for a Triple jump but poops
+			if (isAbleJump(a_newPos, a_type, a_oldpos))
+				return true;
+
+			else if (isAbleMove(a_newPos, a_type, a_oldpos))
+			{
+				return true;
+			}
+			else
+				return false;
+		}
+		return false;
 	}
 	else
+	{
+		if (m_board[a_newPos.x][a_newPos.y] == NONE || m_board[a_newPos.x][a_newPos.y] == POSSIBLEMOVE)
+		{
+			//Recursive Function based on new posistion Does not check for a Triple jump but poops
+			if (isAbleJump(a_newPos, a_type, a_oldpos))
+				return true;
+
+			else if (isAbleMove(a_newPos, a_type, a_oldpos))
+			{
+				return true;
+			}
+			else
+				return false;
+		}
 		return false;
+	}
+	
 }
 
 //Sets up the game board with the pieces
@@ -102,8 +129,9 @@ void CheckersMovement::SetCheckers()
 		placepiece = !placepiece;
 	}
 
-	//m_board[6][6] = PIECE::NONE;
-	//m_board[3][3] = PIECE::BLACK;
+	m_board[6][6] = PIECE::REDKING;
+	
+	m_board[3][3] = PIECE::BLACK;
 	
 	ShowPossibleMoves();
 	m_drawboard->GetCurrentBoard(m_board);
@@ -118,6 +146,7 @@ void CheckersMovement::Update(FlyCamera &_gameCamera, float a_deltatime)
 	else
 		m_player2->Update();
 
+	//Upgrade to a King?
 	for (int i = 0; i <= 7; i++)
 	{
 		if(m_board[0][i] == PIECE::BLACK)
@@ -126,8 +155,8 @@ void CheckersMovement::Update(FlyCamera &_gameCamera, float a_deltatime)
 			m_drawboard->GetCurrentBoard(m_board);
 		}
 	}
-
-	for (int i = 7; i>= 0; i--)
+	//Upgrade to a king?
+	for (int i = 7; i >= 0; i--)
 	{
 		if (m_board[7][i] == PIECE::RED)
 		{
@@ -135,6 +164,9 @@ void CheckersMovement::Update(FlyCamera &_gameCamera, float a_deltatime)
 			m_drawboard->GetCurrentBoard(m_board);
 		}
 	}
+	//delete all pieces that have been deemed unworthy to live
+
+
 }
 //What i grabbed in the array
 PIECE CheckersMovement::GrabPiece(int column, int row)
@@ -147,7 +179,6 @@ PIECE CheckersMovement::GrabPiece(int column, int row)
 	{
 		if (m_board[column][row] == PIECE::REDKING)
 		{
-			
 			return PIECE::REDKING;
 		}
 
@@ -166,6 +197,7 @@ PIECE CheckersMovement::GrabPiece(int column, int row)
 			
 			return PIECE::NONE;
 		}
+		return PIECE::NONE;
 
 	}
 	else if (m_turn == TURN::PLAYER_2)
@@ -188,15 +220,36 @@ PIECE CheckersMovement::GrabPiece(int column, int row)
 		{
 			return PIECE::BLACK;
 		}
+		return PIECE::NONE;
 	}
-	
 	else
 		return PIECE::NONE;
 }
 
 bool CheckersMovement::PlacePiece(PIECE a_type, int x, int z,int oldposx,int oldposz)
 {
-	
+
+	m_delete = true;
+
+	glm::ivec2 possibleoption = glm::ivec2(x, z);
+
+	//If ther is a possible 
+	if (m_jump == true)
+	{
+		
+		for (unsigned int i = 0; i <= m_posJumps.size() - 1; ++i)
+		{ 
+			if (m_posJumps[i] == possibleoption && isValidMovement(glm::ivec2(x, z), a_type, glm::ivec2(oldposx, oldposz)) == true)
+			{
+				m_board[x][z] = a_type;
+				ClearSpot(oldposz, oldposx);
+				return true;
+			}
+		}
+		m_delete = false;
+ 		return false;
+	}
+
 	if (isValidMovement(glm::ivec2(x,z),a_type,glm::ivec2(oldposx, oldposz)))
 	{
 		m_board[x][z] = a_type;
@@ -210,9 +263,15 @@ bool CheckersMovement::PlacePiece(PIECE a_type, int x, int z,int oldposx,int old
 bool CheckersMovement::isAbleJump(glm::ivec2 a_newPos, PIECE a_type, glm::ivec2 a_oldPos)
 {
 
+	bool Forward;
+
 	int Distance = ManhattanDistance(a_newPos, a_oldPos);
 	bool Diagonal = isDiagonal(a_newPos, a_oldPos, a_type);
-	bool Forward = IsForwardMovement(a_newPos, a_oldPos) || a_type == PIECE::REDKING;
+	if (m_turn==TURN::PLAYER_1)
+		 Forward = IsForwardMovement(a_newPos, a_oldPos) || a_type == PIECE::REDKING;
+	else
+		 Forward = IsBackwardMovement(a_newPos, a_oldPos) || a_type == PIECE::BLACKKING;
+
 	bool Piece = isPieceThere(a_newPos, a_oldPos);
 
 	//if King
@@ -225,6 +284,7 @@ bool CheckersMovement::isAbleJump(glm::ivec2 a_newPos, PIECE a_type, glm::ivec2 
 		Piece)   //Is there as piece in the middle
 	{
 		return true;
+		
 	}
 	else
 		return false;
@@ -232,29 +292,28 @@ bool CheckersMovement::isAbleJump(glm::ivec2 a_newPos, PIECE a_type, glm::ivec2 
 
 bool CheckersMovement::isAbleMove(glm::ivec2 a_newPos, PIECE a_type, glm::ivec2 a_oldpos)
 {
-	
-	if (m_board[a_newPos.x][a_newPos.y] == PIECE::NONE)
-	{
-		if (ManhattanDistance(a_newPos, a_oldpos) == 2)
-		{
-			if (isDiagonal(a_newPos,a_oldpos,a_type))
-				return true;
-			else
-				return false;
-		}
-	}
-	//else if (m_board[a_newPos.x][a_newPos.y] == PIECE::POSSIBLEMOVE)
-	//{
-	//	if (ManhattanDistance(a_newPos, a_oldpos) == 2)
-	//	{
-	//		if (isDiagonal(a_newPos, a_oldpos, a_type))
-	//			return true;
-	//		else
-	//			return false;
-	//	}
-	//}
+	bool Forward = false;
+
+	int Distance = ManhattanDistance(a_newPos, a_oldpos);
+	bool Diagonal = isDiagonal(a_newPos, a_oldpos, a_type);
+
+	if (m_turn == TURN::PLAYER_1)
+		Forward = IsForwardMovement(a_newPos, a_oldpos) || a_type == PIECE::REDKING;
 	else
-		return false;
+		Forward = IsBackwardMovement(a_newPos, a_oldpos) || a_type == PIECE::BLACKKING;
+
+	if (m_board[a_newPos.x][a_newPos.y] == PIECE::NONE || m_board[a_newPos.x][a_newPos.y] == PIECE::POSSIBLEMOVE)
+	{
+		if (Distance == 2 &&  ///Gets the Distance
+			Diagonal &&
+			Forward)   //Is there as piece in the middle
+		{
+			return true;
+		}
+		else
+			return false;
+	}
+	else return false;
 }
 
 bool CheckersMovement::isDiagonal(glm::ivec2 newpos, glm::ivec2 oldpos,PIECE a_type)
@@ -265,8 +324,7 @@ bool CheckersMovement::isDiagonal(glm::ivec2 newpos, glm::ivec2 oldpos,PIECE a_t
 	return (xIncrement == yIncrement);
 }
 
-bool CheckersMovement::isPieceThere(glm::ivec2 newpos, glm::ivec2 oldpos)
-{
+bool CheckersMovement::isPieceThere(glm::ivec2 newpos, glm::ivec2 oldpos){
 	//Check if there was a piece between them
 	int xIncrement = newpos.x - oldpos.x;
 	int yIncrement = newpos.y - oldpos.y;
@@ -291,13 +349,24 @@ bool CheckersMovement::isPieceThere(glm::ivec2 newpos, glm::ivec2 oldpos)
 		{
 			if (m_board[zpos][xpos] == PIECE::BLACKKING)
 			{
-				m_board[zpos][xpos] = PIECE::NONE;
-				return true;
+				if (m_delete == false)
+				{
+					return true;
+				}
+				else
+					m_deletemoves.push_back(glm::ivec2(zpos, xpos));
+					return true;
+				
 			}
 			else if (m_board[zpos][xpos] == PIECE::BLACK)
 			{
-				//m_board[zpos][xpos] = PIECE::NONE;
-				return true;
+				if (m_delete == false)
+				{
+					return true;
+				}
+				else
+					m_deletemoves.push_back(glm::ivec2(zpos, xpos));
+					return true;
 			}
 			else 
 				return false;
@@ -307,25 +376,35 @@ bool CheckersMovement::isPieceThere(glm::ivec2 newpos, glm::ivec2 oldpos)
 		{
 			if (m_board[zpos][xpos] == PIECE::REDKING)
 			{
-				m_board[zpos][xpos] = PIECE::NONE;
-				return true;
+				if (m_delete == false)
+				{
+					return true;
+				}
+				else
+					m_deletemoves.push_back(glm::ivec2(zpos, xpos));
+					return true;
 			}
 			else if (m_board[zpos][xpos] == PIECE::RED)
 			{
-				m_board[zpos][xpos] = PIECE::NONE;
-				return true;
+				if (m_delete == false)
+				{
+					return true;
+				}
+				else
+					m_deletemoves.push_back(glm::ivec2(zpos, xpos));
+					return true;
 			}
 			else
 				return false;
 		}
 	}
+	return false;
 	
 }
-
 //Manhattan Distance
 int CheckersMovement::ManhattanDistance(glm::ivec2 a_to, glm::ivec2 a_from)
 {
-	
+
 	int ValueX1 = a_to.x;
 	int ValueX2 = a_from.x;
 	int ValueY1 = a_to.y;
@@ -360,11 +439,16 @@ bool CheckersMovement::DoubleJump(glm::ivec2 a_newPos, glm::ivec2 dir, PIECE a_t
 
 void CheckersMovement::SwitchTurn()
 {
+	m_jump = false;
 	//Clear Possible moves 
-	memset(m_jumps, 0, sizeof(m_jumps));
-	ClearPossibleMoves();
-	ShowPossibleMoves();
+	Clear();
 	m_turn = (m_turn == TURN::PLAYER_1) ? TURN::PLAYER_2 : TURN::PLAYER_1;
+	if (m_turn == TURN::PLAYER_2)
+	{
+		ClearPossibleMoves();
+	}
+	ShowPossibleMoves();
+	m_drawboard->GetCurrentBoard(m_board);
 	
 }
 
@@ -372,6 +456,7 @@ void CheckersMovement::SwitchTurn()
 void CheckersMovement::ShowPossibleMoves()
 {
 	int index;
+	glm::ivec2 compare = glm::ivec2(0, 8);
 	if (m_turn == TURN::PLAYER_1)
 	{
 		//Column Interation 
@@ -380,8 +465,13 @@ void CheckersMovement::ShowPossibleMoves()
 			for (int r = 0; r < 8; r++)
 			{
 				index = 0;
+				glm::ivec2 temp;
 				//////////////////////////////
-				if (m_board[c][r] == PIECE::NONE || m_board[c][r] == PIECE::BLACK || m_board[c][r] == PIECE::BLACKKING)
+				if (!m_deletemoves.empty())
+				{ 
+					temp = m_deletemoves[0];
+				}
+				if (m_board[c][r] == PIECE::NONE || m_board[c][r] == PIECE::BLACK || m_board[c][r] == PIECE::BLACKKING || temp == glm::ivec2(c, r))
 				{
 					continue;
 				}
@@ -390,15 +480,13 @@ void CheckersMovement::ShowPossibleMoves()
 				PIECE current = m_board[c][r];
 
 				bool possibleMoveUpRight = false,
-					 possibleMoveUpleft = false,
-					 possibleMoveDownRight = false,
-					 possibleMoveDownLeft = false;
+					possibleMoveUpleft = false,
+					possibleMoveDownRight = false,
+					possibleMoveDownLeft = false;
 				//Before this Check for a KIng
 				//Else do that shit
 
 				glm::ivec2 pos = glm::ivec2(c, r);
-
-				glm::ivec2 compare = glm::ivec2(0, 8);
 
 				glm::ivec2 movePosUpRight = pos + m_moveUpRight;
 				glm::ivec2 movePosUpLeft = pos + m_moveUpLeft;
@@ -407,88 +495,217 @@ void CheckersMovement::ShowPossibleMoves()
 
 				switch (current)
 				{
-					case RED://Starts from row 0
-						possibleMoveUpRight = isValidMovement(movePosUpRight, current, pos);
-						possibleMoveUpleft = isValidMovement(movePosUpLeft, current, pos);
-						//Checks for Possible jumps
-						if (isValidMovement(movePosUpRight + m_moveUpRight, current, pos))
-						{
-							m_jumps[index] = true;
-								index++;
-						}
+				case RED://Starts from row 0
 
-						if (isValidMovement(movePosUpLeft + m_moveUpLeft, current, pos))
-						{
-							m_jumps[index] = true;
-							index++;
-						}
-						break;
 
-					case REDKING:
+					possibleMoveUpRight = isValidMovement(movePosUpRight, current, pos);
+					possibleMoveUpleft = isValidMovement(movePosUpLeft, current, pos);
 
-						//Possible Move check
-						possibleMoveUpRight = isValidMovement(movePosUpRight, current, pos);
-						possibleMoveUpleft = isValidMovement(movePosUpLeft, current, pos);
-						possibleMoveDownRight = isValidMovement(movePosDownRight, current, pos);
-						possibleMoveDownLeft = isValidMovement(movePosDownLeft, current, pos);
+					//Checks for Possible jumps
+					if (isValidMovement(movePosUpRight + m_moveUpRight, current, pos) && Compare(movePosUpRight + m_moveUpRight, compare))
+					{
+						m_jump = true;
+						m_posJumps.push_back(movePosUpRight + m_moveUpRight);
+						index++;
+					}
 
-						//Possible Jump check
-						//Checks for Possible jumps 
-						if (isValidMovement(movePosUpRight + m_moveUpRight, current, pos))
-						{
-							m_jumps[index] = true;
-							index++;
-						}
+					if (isValidMovement(movePosUpLeft + m_moveUpLeft, current, pos) && Compare(movePosUpLeft + m_moveUpLeft, compare))
+					{
+						m_jump = true;
+						m_posJumps.push_back(movePosUpLeft + m_moveUpLeft);
+						index++;
+					}
+					break;
 
-						if (isValidMovement(movePosUpLeft + m_moveUpLeft, current, pos))
-						{
-							m_jumps[index] = true;
-							index++;
-						}
+				case REDKING:
+					//Possible Jump check
+					possibleMoveUpRight = isValidMovement(movePosUpRight, current, pos);
+					possibleMoveUpleft = isValidMovement(movePosUpLeft, current, pos);
+					possibleMoveDownLeft = isValidMovement(movePosDownLeft, current, pos);
+					possibleMoveDownRight = isValidMovement(movePosDownRight, current, pos);
 
-						if (isValidMovement(movePosDownRight + m_moveDownRight, current, pos))
-						{
-							m_jumps[index] = true;
-							index++;
-						}
+					//Checks for Possible jumps 
+					if (isValidMovement(movePosUpRight + m_moveUpRight, current, pos) && Compare(movePosUpRight + m_moveUpRight, compare))
+					{
+						m_jump = true;
+						m_posJumps.push_back(movePosUpLeft + m_moveUpLeft);
+						index++;
+					}
 
-						if (isValidMovement(movePosDownLeft + m_moveDownLeft, current, pos))
-						{
-							m_jumps[index] = true;
-							index++;
-						}
-						break;
-					
-					default:
-						break;
+					if (isValidMovement(movePosUpLeft + m_moveUpLeft, current, pos) && Compare(movePosUpLeft + m_moveUpLeft, compare))
+					{
+						m_jump = true;
+						m_posJumps.push_back(movePosUpLeft + m_moveUpLeft);
+						index++;
+					}
+					if (isValidMovement(movePosDownRight + m_moveDownRight, current, pos) && Compare(movePosDownRight + m_moveDownRight, compare))
+					{
+						m_jump = true;
+						m_posJumps.push_back(movePosUpLeft + m_moveUpLeft);
+						index++;
+					}
+
+					if (isValidMovement(movePosDownLeft + m_moveDownLeft, current, pos) && Compare(movePosDownLeft + m_moveDownLeft, compare))
+					{
+						m_jump = true;
+						m_posJumps.push_back(movePosUpLeft + m_moveUpLeft);
+						index++;
+					}
+					break;
+
+				default:
+					break;
 				}
-				
 
 				//Shows all possible moves
 				//For each possible option from the case
-				if (possibleMoveUpRight == true && Compare(movePosUpRight, compare))
+				if (m_jump == false)
 				{
-					m_board[movePosUpRight.x][movePosUpRight.y] = PIECE::POSSIBLEMOVE;
-					possibleMoveUpRight = false;
+					if (possibleMoveUpRight == true && Compare(movePosUpRight, compare))
+					{
+						m_board[movePosUpRight.x][movePosUpRight.y] = PIECE::POSSIBLEMOVE;
+						m_posMoves.push_back(movePosUpRight);
+						possibleMoveUpRight = false;
+					}
+
+					if (possibleMoveUpleft == true && Compare(movePosUpLeft, compare))
+					{
+						m_board[movePosUpLeft.x][movePosUpLeft.y] = PIECE::POSSIBLEMOVE;
+						m_posMoves.push_back(movePosUpLeft);
+						possibleMoveUpRight = false;
+					}
+
+					if (possibleMoveDownRight == true && Compare(movePosDownRight, compare))
+					{
+						m_board[movePosDownRight.x][movePosDownRight.y] = PIECE::POSSIBLEMOVE;
+						m_posMoves.push_back(movePosDownRight);
+						possibleMoveUpRight = false;
+					}
+
+					if (possibleMoveDownLeft == true && Compare(movePosDownLeft, compare))
+					{
+						m_board[movePosDownLeft.x][movePosDownLeft.y] = PIECE::POSSIBLEMOVE;
+						m_posMoves.push_back(movePosDownLeft);
+						possibleMoveUpRight = false;
+					}
 				}
-				if (possibleMoveUpleft == true && Compare(movePosUpLeft, compare))
-				{
-					m_board[movePosUpLeft.x][movePosUpLeft.y] = PIECE::POSSIBLEMOVE;
-					possibleMoveUpRight = false;
-				}
-				if (possibleMoveDownRight == true && Compare(movePosDownRight, compare))
-				{
-					m_board[movePosDownRight.x][movePosDownRight.y] = PIECE::POSSIBLEMOVE;
-					possibleMoveUpRight = false;
-				}
-				if (possibleMoveDownLeft == true && Compare(movePosDownLeft, compare))
-				{
-					m_board[movePosDownLeft.x][movePosDownLeft.y] = PIECE::POSSIBLEMOVE;
-					possibleMoveUpRight = false;
-				}
+				else
+					ClearPossibleMoves();
+
 			}
 		}
+
+		///Draw Possible jump option
+		for (unsigned int i = 0; i < m_posJumps.size(); ++i)
+		{
+			glm::ivec2 jumps = m_posJumps[i];
+			if (Compare(jumps, compare))
+			{
+				m_board[jumps.x][jumps.y] = PIECE::POSSIBLEMOVE;
+			}
+		}
+		//Give the draw state the current data board
 		m_drawboard->GetCurrentBoard(m_board);
+	}
+	//For the Army of Black//////////////////////////////////////////////////////////////////////////////////////
+	else if (m_turn == TURN::PLAYER_2)
+	{
+		for (int c = 0; c < 8; c++)
+		{
+			for (int r = 0; r < 8; r++)
+			{
+				index = 0;
+				glm::ivec2 temp;
+				//////////////////////////////
+				if (!m_deletemoves.empty())
+				{
+					temp = m_deletemoves[0];
+				}
+				if (m_board[c][r] == PIECE::NONE || m_board[c][r] == PIECE::RED || m_board[c][r] == PIECE::REDKING || temp == glm::ivec2(c, r))
+				{
+					continue;
+				}
+				////
+				//Check Valid Moves
+				PIECE current = m_board[c][r];
+
+				bool possibleMoveUpRight = false,
+					possibleMoveUpleft = false,
+					possibleMoveDownRight = false,
+					possibleMoveDownLeft = false;
+				//Before this Check for a KIng
+				//Else do that shit
+
+				glm::ivec2 pos = glm::ivec2(c, r);
+
+				glm::ivec2 movePosUpRight = pos + m_moveUpRight;
+				glm::ivec2 movePosUpLeft = pos + m_moveUpLeft;
+				glm::ivec2 movePosDownRight = pos + m_moveDownRight;
+				glm::ivec2 movePosDownLeft = pos + m_moveDownLeft;
+
+				switch (current)
+				{
+				case BLACK://Starts from row 0
+
+
+					possibleMoveUpRight = isValidMovement(movePosUpRight, current, pos);
+					possibleMoveUpleft = isValidMovement(movePosUpLeft, current, pos);
+
+					//Checks for Possible jumps
+					if (isValidMovement(movePosDownLeft + m_moveDownLeft, current, pos) && Compare(movePosDownLeft + m_moveDownLeft, compare))
+					{
+						m_jump = true;
+						m_posJumps.push_back(movePosDownLeft + m_moveDownLeft);
+						index++;
+					}
+
+					if (isValidMovement(movePosDownRight + m_moveDownRight, current, pos) && Compare(movePosDownRight + m_moveDownRight, compare))
+					{
+						m_jump = true;
+						m_posJumps.push_back(movePosDownRight + m_moveDownRight);
+						index++;
+					}
+					break;
+
+				case BLACKKING:
+					//Possible Jump check
+					possibleMoveUpRight = isValidMovement(movePosUpRight, current, pos);
+					possibleMoveUpleft = isValidMovement(movePosUpLeft, current, pos);
+					possibleMoveDownLeft = isValidMovement(movePosDownLeft, current, pos);
+					possibleMoveDownRight = isValidMovement(movePosDownRight, current, pos);
+
+					//Checks for Possible jumps 
+					if (isValidMovement(movePosUpRight + m_moveUpRight, current, pos) && Compare(movePosUpRight + m_moveUpRight, compare))
+					{
+						m_jump = true;
+						m_posJumps.push_back(movePosUpLeft + m_moveUpLeft);
+						index++;
+					}
+
+					if (isValidMovement(movePosUpLeft + m_moveUpLeft, current, pos) && Compare(movePosUpLeft + m_moveUpLeft, compare))
+					{
+						m_jump = true;
+						m_posJumps.push_back(movePosUpLeft + m_moveUpLeft);
+						index++;
+					}
+					if (isValidMovement(movePosDownRight + m_moveDownRight, current, pos) && Compare(movePosDownRight + m_moveDownRight, compare))
+					{
+						m_jump = true;
+						m_posJumps.push_back(movePosUpLeft + m_moveUpLeft);
+						index++;
+					}
+
+					if (isValidMovement(movePosDownLeft + m_moveDownLeft, current, pos) && Compare(movePosDownLeft + m_moveDownLeft, compare))
+					{
+						m_jump = true;
+						m_posJumps.push_back(movePosUpLeft + m_moveUpLeft);
+						index++;
+					}
+					break;
+
+				default:
+					break;
+				}
 	}
 }
 //Compares your current vector with the Vector Detailed Below
@@ -496,8 +713,8 @@ void CheckersMovement::ShowPossibleMoves()
 //Maximum Value you want to compare with
 bool CheckersMovement::Compare(glm::ivec2 a_curValue, glm::ivec2 a_MinMax)
 {
-	if ((a_curValue.x > a_MinMax.x && a_curValue.x < a_MinMax.y)
-		&& (a_curValue.y > a_MinMax.x && a_curValue.y < a_MinMax.y))
+	if ((a_curValue.x >= a_MinMax.x && a_curValue.x < a_MinMax.y)
+		&& (a_curValue.y >= a_MinMax.x && a_curValue.y < a_MinMax.y))
 	{
 		return true;
 	}
@@ -535,5 +752,111 @@ void CheckersMovement::ClearPossibleMoves()
 //Forward 
 bool CheckersMovement::IsForwardMovement(glm::ivec2 a_newpos, glm::ivec2 a_oldpos)
 {
-	return (a_newpos.y - a_oldpos.y) > 0;
+	return (a_newpos.x - a_oldpos.x) > 0;
+}
+//used within the Detecting possible moves so it does not delete the freckon piece;
+bool CheckersMovement::ShowCurrentPieceMoves(glm::ivec2 oldpos, PIECE a_type)
+{
+	ClearPossibleMoves();
+	glm::ivec2 compare = glm::ivec2(0, 8);
+	glm::ivec2 movePosUpRight = oldpos + m_moveUpRight + m_moveUpRight;
+	glm::ivec2 movePosUpLeft = oldpos + m_moveUpLeft + m_moveUpLeft;
+	glm::ivec2 movePosDownRight = oldpos + m_moveDownRight + m_moveDownRight;
+	glm::ivec2 movePosDownLeft = oldpos + m_moveDownLeft + m_moveDownLeft;
+
+	m_localJump = false;
+	m_delete = false;
+
+	switch (a_type)
+	{
+	case RED://Starts from row 0
+
+		//Checks for Possible jumps
+		if (isValidMovement(movePosUpRight, a_type, oldpos) && Compare(movePosUpRight, compare))
+		{
+			m_localJump = true;
+			m_posJumps.push_back(movePosUpRight);
+			m_board[movePosUpRight.x][movePosUpRight.y] = PIECE::POSSIBLEMOVE;
+		}
+
+		if (isValidMovement(movePosUpLeft, a_type, oldpos) && Compare(movePosUpLeft, compare))
+		{
+			m_localJump = true;
+			m_posJumps.push_back(movePosUpLeft);
+			m_board[movePosUpLeft.x][movePosUpLeft.y] = PIECE::POSSIBLEMOVE;
+		}
+		break;
+
+	case REDKING:
+		//Possible Jump check
+
+		//Checks for Possible jumps 
+		if (isValidMovement(movePosUpRight, a_type, oldpos) && Compare(movePosUpRight, compare))
+		{
+			m_localJump = true;
+			m_posJumps.push_back(movePosUpRight);
+			m_board[movePosUpRight.x][movePosUpRight.y] = PIECE::POSSIBLEMOVE;
+		}
+
+		if (isValidMovement(movePosUpLeft, a_type, oldpos) && Compare(movePosUpLeft, compare))
+		{
+			m_localJump = true;
+			m_posJumps.push_back(movePosUpLeft);
+			m_board[movePosUpLeft.x][movePosUpLeft.y] = PIECE::POSSIBLEMOVE;
+		}
+
+		if (isValidMovement(movePosDownRight, a_type, oldpos) && Compare(movePosDownRight, compare))
+		{
+			m_localJump = true;
+			m_posJumps.push_back(movePosDownRight);
+			m_board[movePosDownRight.x][movePosDownRight.y] = PIECE::POSSIBLEMOVE;
+		}
+
+		if (isValidMovement(movePosDownLeft, a_type, oldpos) && Compare(movePosDownLeft, compare))
+		{
+			m_localJump = true;
+			m_posJumps.push_back(movePosDownLeft);
+			m_board[movePosDownLeft.x][movePosDownLeft.y] = PIECE::POSSIBLEMOVE;
+		}
+		break;
+
+	default:
+		break;
+	}
+
+
+	m_drawboard->GetCurrentBoard(m_board);
+	return m_localJump;
+}
+
+
+void CheckersMovement::Clear()
+{
+	m_delete = false;
+
+	while (!m_posJumps.empty())
+	{
+		m_posJumps.pop_back();
+	}
+
+	while (!m_posMoves.empty())
+	{
+		m_posMoves.pop_back();
+	}
+
+	for (unsigned int i = 0; i < m_deletemoves.size(); ++i)
+	{
+		m_board[m_deletemoves[i].x][m_deletemoves[i].y] = PIECE::NONE;
+		m_drawboard->GetCurrentBoard(m_board);
+		m_deletemoves.pop_back();
+	}
+	ClearPossibleMoves();
+}
+
+//Need a Perform Action
+//Neeed a way to get all the posistions
+
+bool CheckersMovement::IsBackwardMovement(glm::ivec2 a_newpos, glm::ivec2 a_oldpos)
+{
+	return (a_newpos.x - a_oldpos.x) < 0;
 }
