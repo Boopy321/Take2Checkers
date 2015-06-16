@@ -1,9 +1,10 @@
-
+//poo
 #include "GLFW\glfw3.h"
 #include "Checkers Project\CheckersPlayer.h"
 #include "CheckersProject.h"
 
 #include "glm\glm.hpp"
+#include <iostream>
 
 CheckersPlayer::CheckersPlayer(CheckersProject* a_drawstate,CheckersMovement* a_gamestate)
 {
@@ -76,6 +77,9 @@ void CheckersPlayer::Update()
 		m_timer = 1.5f;
 	}
 
+	std::cout << zpos <<","<< xpos<< std::endl;
+
+	
 	//Grabs the piece if there is a piece at the spot
 	if (m_pickedUp == true && m_piece == PIECE::NONE)
 	{
@@ -105,8 +109,12 @@ void CheckersPlayer::Update()
 			if (m_gamestate->PlacePiece(m_piece, zpos, xpos, m_oldPos.x, m_oldPos.y) == true )
 			{
 				//Double Jump
-				if (m_gamestate->ShowCurrentPieceMoves(glm::ivec2(zpos, xpos), m_piece))
+				m_gamestate->Clear();
+				
+				if (m_gamestate->ShowCurrentPieceMoves(glm::ivec2(zpos, xpos), m_piece) && m_gamestate->m_jump == true)
 				{
+					m_oldPos.x = zpos;
+					m_oldPos.y = xpos;
 					m_pickedUp = true;
 					m_canDrop = false;
 				}

@@ -39,7 +39,7 @@ public:
 
 	CheckersMovement();
 	~CheckersMovement();
-	//Iniatiate the board
+	//Iniatiate the board with poo
 	void SetCheckers();
 
 	bool PlacePiece(PIECE a_type, int x, int z, int oldposx, int oldposz);
@@ -51,9 +51,12 @@ public:
 	bool isPieceThere(glm::ivec2 newpos, glm::ivec2 oldpos);
 	bool IsPieceNearby(int newposz, int newposx);
 	bool IsForwardMovement(glm::ivec2 a_newpos, glm::ivec2 a_oldpos);
+	bool IsBackwardMovement(glm::ivec2 a_newpos, glm::ivec2 a_oldpos);
 	bool DoubleJump(glm::ivec2 a_newpos , glm::ivec2 dir, PIECE a_type);
 	//Instead of Auto Changing
 
+	//Wipes all vectors and clears possible moves
+	void Clear();
 	//Takes a Position vector and Compares it with the
 	//lowest possible and highest possible numbers in the grid
 	bool Compare(glm::ivec2 CurValue, glm::ivec2 MinMax);
@@ -79,10 +82,12 @@ public:
 	void Update(FlyCamera &_gameCamera, float a_deltatime);
 	//Grabs what
 	PIECE GrabPiece(int a, int b);
+
+	bool m_jump;
 private:
 	
 	bool m_valid;
-	bool m_jump;
+	
 	bool m_localJump;
 	bool m_tileRed;
 	bool m_delete;
