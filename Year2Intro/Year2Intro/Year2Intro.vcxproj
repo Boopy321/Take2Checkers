@@ -81,11 +81,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Checkers Project\MCTS_Checker.cpp" />
     <ClCompile Include="src\Checkers Project\CheckersMovement.cpp" />
     <ClCompile Include="src\Assets\AI\MCTS.cpp" />
     <ClCompile Include="src\Assets\Render\Renderer.cpp" />
     <ClCompile Include="src\Assets\AI\ConnectFour.cpp" />
-    <ClCompile Include="src\Checkers Project\CheckersNetwork.cpp" />
     <ClCompile Include="src\Checkers Project\CheckersPlayer.cpp" />
     <ClCompile Include="src\Checkers Project\CheckersProject.cpp" />
     <ClCompile Include="src\Assets\SkyBox\SkyBox.cpp" />
@@ -101,12 +101,12 @@
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Checkers Project\MCTS_Checker.h" />
     <ClInclude Include="src\Checkers Project\CheckersMovement.h" />
     <ClInclude Include="src\Assets\AI\MCTS.h" />
     <ClInclude Include="src\Assets\Render\Renderer.h" />
     <ClInclude Include="src\Assets\AI\AIBase.h" />
     <ClInclude Include="src\Assets\AI\ConnectFour.h" />
-    <ClInclude Include="src\Checkers Project\CheckersNetwork.h" />
     <ClInclude Include="src\Checkers Project\CheckersPlayer.h" />
     <ClInclude Include="src\Checkers Project\CheckersProject.h" />
     <ClInclude Include="src\Assets\SkyBox\SkyBox.h" />
