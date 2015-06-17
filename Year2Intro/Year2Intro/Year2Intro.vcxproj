@@ -82,7 +82,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\Checkers Project\MCTS_Checker.cpp" />
-    <ClCompile Include="src\Checkers Project\MCTS_Checker.cpp" />
     <ClCompile Include="src\Checkers Project\CheckersMovement.cpp" />
     <ClCompile Include="src\Assets\AI\MCTS.cpp" />
     <ClCompile Include="src\Assets\Render\Renderer.cpp" />
@@ -102,7 +101,6 @@
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Checkers Project\MCTS_Checker.h" />
     <ClInclude Include="src\Checkers Project\MCTS_Checker.h" />
     <ClInclude Include="src\Checkers Project\CheckersMovement.h" />
     <ClInclude Include="src\Assets\AI\MCTS.h" />
