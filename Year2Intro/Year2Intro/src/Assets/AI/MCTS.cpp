@@ -66,7 +66,6 @@ int MCTS::makeDecision(const Game& game)
 			}
 	
 		}
-
 		return actions[bestAction];
 }
 

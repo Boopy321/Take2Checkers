@@ -21,7 +21,3 @@ bool InputManager::Getkey(GLFWwindow* a_window, Keys a_key)
 	return glfwGetKey(window, a_key);
 }
 
-bool InputManager::GetMouseDown(int a_mouseButton)
-{
-	return glfwGetMouseButton(window, a_mouseButton);
-}

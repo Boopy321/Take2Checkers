@@ -17,7 +17,7 @@
 
 CheckersProject::CheckersProject()
 {
-	//Start up Grid
+	//Start up Grid poo
 	m_scaleMod = 1.5f;
 
 
@@ -66,7 +66,7 @@ void CheckersProject::Draw(FlyCamera &_gameCamera, float a_deltatime)
 	}
 
 
-	///Draw Tokens 
+	///Draw Tokens  
 
 	for (int c = 0; c <= m_cols - 1; c++)
 	{
