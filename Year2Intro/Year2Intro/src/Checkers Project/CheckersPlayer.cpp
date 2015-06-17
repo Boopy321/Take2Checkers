@@ -110,7 +110,6 @@ void CheckersPlayer::Update()
 			{
 				//Double Jump
 				m_gamestate->Clear();
-				
 				if (m_gamestate->ShowCurrentPieceMoves(glm::ivec2(zpos, xpos), m_piece) && m_gamestate->m_jump == true)
 				{
 					m_oldPos.x = zpos;

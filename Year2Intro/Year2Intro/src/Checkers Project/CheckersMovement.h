@@ -87,10 +87,10 @@ public:
 private:
 	
 	bool m_valid;
-	
 	bool m_localJump;
 	bool m_tileRed;
 	bool m_delete;
+
 	PIECE m_board[8][8];
 
 	int m_blackcount;
