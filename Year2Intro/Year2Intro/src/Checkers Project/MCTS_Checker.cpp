@@ -1,21 +1,6 @@
 #include "MCTS_Checker.h"
 
-
-MCTS_Checker::MCTS_Checker()
-{
-}
-
-
-MCTS_Checker::~MCTS_Checker()
-{
-}
-
-
-
-
-
-//
-//int MCTS::makeDecision(const Game& game)
+//int MCTS_Checker::makeDecision(const CheckersMovement& game)
 //{
 //	//1. Get a list of the available actions that could be performed
 //	std::vector<int> actions;
@@ -78,12 +63,12 @@ MCTS_Checker::~MCTS_Checker()
 //	return actions[bestAction];
 //}
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
+
+
+
+
+
+
+
+
+

@@ -41,6 +41,6 @@ private:
 
 	CheckersProject* m_drawstate;
 
-	
+	Action* m_action;
 	GLFWwindow* m_pWindow;
 };

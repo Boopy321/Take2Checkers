@@ -78,7 +78,7 @@ void CheckersProject::Draw(FlyCamera &_gameCamera, float a_deltatime)
 			}
 			else if (m_board[c][r] == PIECE::REDKING)
 			{
-				Gizmos::addCylinderFilled(vec3((r * m_scaleMod), 0.5, c * m_scaleMod), 0.75, 0.55, 16, vec4(1, 0, 1, 1), &rotate);
+				Gizmos::addCylinderFilled(vec3((r * m_scaleMod), 0.5, c * m_scaleMod), 0.75, 0.55, 16, vec4(1, 0, 0, 1), &rotate);
 			}
 			else if (m_board[c][r] == PIECE::BLACK)
 			{
