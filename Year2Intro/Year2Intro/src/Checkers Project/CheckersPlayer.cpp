@@ -113,7 +113,6 @@ void CheckersPlayer::Update()
 		m_gamestate->performAction(m_action);
 		m_piece = PIECE::NONE;
 		
-		
 		}
 	}
 	

@@ -48,7 +48,7 @@ void CheckersMovement::SetCheckers()
 	int i = 0;
 	for (int c = 0; c <= m_cols - 1; c++)
 	{
-
+	
 		for (int r = 0; r <= m_rows - 1; r++)
 		{
 			if (i == m_totalcount)
@@ -64,15 +64,15 @@ void CheckersMovement::SetCheckers()
 				placepiece = true;
 				m_board[c][r] = PIECE::NONE;
 			}
-
+	
 		}
 		placepiece = !placepiece;
 	}
-
+	
 	i = m_totalcount;
 	for (int c = m_cols - 1; c >= 0; c--)
 	{
-
+	
 		for (int r = m_rows - 1; r >= 0; r--)
 		{
 			if (i == 0)
@@ -88,11 +88,11 @@ void CheckersMovement::SetCheckers()
 				placepiece = false;
 				m_board[c][r] = PIECE::NONE;
 			}
-
+	
 		}
 		placepiece = !placepiece;
 	}
-	
+
 	ShowPossibleMoves();
 	m_drawboard->GetCurrentBoard(m_board);
 
@@ -1117,7 +1117,7 @@ void CheckersMovement::performAction(Action* a_action)
 	if (PlacePiece(a_action->pieceType, a_action->newLocation.x, a_action->newLocation.y, a_action->originalLocation.x, a_action->originalLocation.y) == true)
 	{
 		//Upgrade king if possible
-		a_action->pieceType = UpgradeToKing(a_action->originalLocation, a_action->pieceType);
+		a_action->pieceType = UpgradeToKing(a_action->newLocation, a_action->pieceType);
 		//
 		Clear();
 		if (ShowCurrentPieceMoves(a_action->newLocation, a_action->pieceType) && m_jump == true)
@@ -1148,4 +1148,14 @@ bool CheckersMovement::isGameOver()
 	}
 	else
 		return false;
+}
+
+std::vector<Action> CheckersMovement::ReturnMoveSet()
+{
+	if (!m_jumpmoves.empty())
+	{
+		return m_normMoves;
+	}
+	else
+		return m_jumpmoves;
 }

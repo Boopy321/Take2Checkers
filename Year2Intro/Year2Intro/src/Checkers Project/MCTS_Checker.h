@@ -7,7 +7,7 @@ public:
 		m_playouts(playouts) {
 	}
 	virtual ~MCTS_Checker() {}
-	virtual int makeDecision(const CheckersMovement& game);
+	virtual int makeDecision(CheckersMovement& game);
 private:
 	int m_playouts;	CheckersMovement* m_clone;
 	CheckersMovement* curGame;

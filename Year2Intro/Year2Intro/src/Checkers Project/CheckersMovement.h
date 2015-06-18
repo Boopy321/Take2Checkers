@@ -94,11 +94,16 @@ public:
 	
 	void ClearSpot(int a_oldz, int a_oldx);
 
-	bool CheckersMovement::ShowCurrentPieceMoves(glm::ivec2 oldpos, PIECE a_type);
+	bool ShowCurrentPieceMoves(glm::ivec2 oldpos, PIECE a_type);
 
 	void Update(FlyCamera &_gameCamera, float a_deltatime);
 	//Grabs what
 	PIECE GrabPiece(int a, int b);
+
+	std::vector<Action> ReturnMoveSet();
+
+	std::vector<Action> m_jumpmoves;
+	std::vector<Action> m_normMoves;
 
 	bool m_jump;
 protected:
@@ -107,8 +112,7 @@ protected:
 	TURN m_turn;
 
 	std::vector<glm::ivec2> m_deletemoves;
-	std::vector<Action> m_jumpmoves;
-	std::vector<Action> m_normMoves;
+
 
 private:
 	
