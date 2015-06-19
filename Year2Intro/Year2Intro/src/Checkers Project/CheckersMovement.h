@@ -3,6 +3,7 @@
 class CheckersProject;
 class FlyCamera;
 class CheckersPlayer;
+class MCTS_Checker;
 #include <vector>
 #include <glm/vec2.hpp>
 #include <list>
@@ -14,9 +15,8 @@ enum PIECE
 	BLACK,
 	REDKING,
 	BLACKKING,
-	REMOVE_RED,
-	REMOVE_BLACK,
 	POSSIBLEMOVE,
+	WINNING_MLG_PRO_MATE,
 };
 
 enum STATE
@@ -24,7 +24,7 @@ enum STATE
 	UNKNOWN,
 	PLAYER_ONE,
 	PLAYER_TWO,
-	DRAW,
+	GAMEOVER,
 };
 
 enum class TURN
@@ -33,6 +33,8 @@ enum class TURN
 	PLAYER_2,
 	GAMEOVER,
 };
+
+
 
 struct Action
 {
@@ -58,6 +60,7 @@ public:
 
 	bool PlacePiece(PIECE a_type, int x, int z, int oldposx, int oldposz);
 	//CHECKERS RULL FUNCTIONS
+#pragma region CheckerRules
 	bool isValidMovement(glm::ivec2 a_newPos, PIECE a_type, glm::ivec2 a_oldpos);
 	bool isAbleJump(glm::ivec2 a_newPos, PIECE a_type, glm::ivec2 a_oldpos);
 	bool isAbleMove(glm::ivec2 a_newPos, PIECE a_type, glm::ivec2 a_oldpos);
@@ -67,6 +70,7 @@ public:
 	bool IsForwardMovement(glm::ivec2 a_newpos, glm::ivec2 a_oldpos);
 	bool IsBackwardMovement(glm::ivec2 a_newpos, glm::ivec2 a_oldpos);
 	bool DoubleJump(glm::ivec2 a_newpos , glm::ivec2 dir, PIECE a_type);
+#pragma endregion
 	//Clone the current game
 	CheckersMovement* Clone();
 	//Wipes all vectors and clears possible moves
@@ -75,7 +79,7 @@ public:
 	//lowest possible and highest possible numbers in the grid
 	bool Compare(glm::ivec2 CurValue, glm::ivec2 MinMax);
 
-	bool CheckersMovement::isGameOver();
+	STATE CheckersMovement::isGameOver();
 
 	//Call Before using Possible moves
 	void ClearPossibleMoves();
@@ -129,7 +133,7 @@ private:
 	int m_rows;
 
 	CheckersPlayer* m_player1;
-	CheckersPlayer* m_player2;
+	MCTS_Checker* m_player2;
 
 	glm::ivec2 m_moveUpRight;
 	glm::ivec2 m_moveDownRight;
