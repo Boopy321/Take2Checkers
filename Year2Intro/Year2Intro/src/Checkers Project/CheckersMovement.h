@@ -19,6 +19,17 @@ enum PIECE
 	WINNING_MLG_PRO_MATE,
 };
 
+//enum AI_STATE
+//{
+//	RANDOMMOVE = 1,
+//	REDTAKEBLACK = -2,
+//	BLACKTAKERED = 2,
+//	REDTAKEKING = -5,
+//	BLACKTAKEKING = 5,
+//
+//
+//};
+
 enum STATE
 {
 	UNKNOWN,
@@ -108,6 +119,9 @@ public:
 
 	std::vector<Action> m_jumpmoves;
 	std::vector<Action> m_normMoves;
+
+	int ReturnWeight();
+
 
 	bool m_jump;
 protected:

@@ -22,7 +22,7 @@ CheckersMovement::CheckersMovement()
 	m_drawboard = new CheckersProject();
 	
 	m_player1 = new CheckersPlayer(m_drawboard,this);
-	m_player2 = new MCTS_Checker(10);
+	m_player2 = new MCTS_Checker(500);
 
 	m_jump = false;
 	m_delete = false;
@@ -1234,8 +1234,12 @@ std::vector<Action> CheckersMovement::ReturnMoveSet()
 		return m_normMoves;
 }
 #pragma endregion
-//
-//void CheckersMovement::GetPossibleMoves()
-//{
-//
-//}
+
+int CheckersMovement::ReturnWeight()
+{
+	if (m_redcount > m_blackcount)
+		return -10;
+	else (m_blackcount > m_redcount);
+		return 10;
+		
+}

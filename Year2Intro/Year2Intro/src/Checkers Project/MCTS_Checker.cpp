@@ -57,7 +57,7 @@ Action MCTS_Checker::makeDecision(CheckersMovement& game)
 				int action = rand() % nextmoves.size();
 
 				m_clone->performAction(&nextmoves[action]);
-
+				value += m_clone->ReturnWeight();
 			}
 			if (m_clone->isGameOver() == STATE::PLAYER_ONE)
 				value -= 1;
